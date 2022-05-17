@@ -23,7 +23,7 @@ public class Map {
 
     public Map(TiledMap tiledMap) {
         this.tiledMap = tiledMap;
-        collisionAreas = new Array<CollisionArea>();
+        collisionAreas = new Array<>();
         parseCollisionLayer();
         startLocation = new Vector2();
         textLocation = new Vector2();

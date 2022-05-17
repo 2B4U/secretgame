@@ -49,7 +49,8 @@ public class GameUI extends Table {
 
 //        add(debug);
 
-        add(fpslabel);
+        add(fpslabel).colspan(2);
+        row();
         top().left();
         setDebug(true, true);
     }

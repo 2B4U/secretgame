@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.*;
 import me.lmpedro.main.audio.AudioManager;
+import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.screens.AbstractScreen;
 import me.lmpedro.main.screens.ScreenType;
@@ -59,6 +60,8 @@ public class Main extends Game {
 
     private InputManager inputManager;
 
+    private ECSEngine ecsEngine;
+
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
@@ -81,6 +84,8 @@ public class Main extends Game {
         initializeSkin();
         stage = new Stage(new ScreenViewport(), spriteBatch);
         stage.setDebugAll(true);
+
+
         // audio
         audioManager = new AudioManager(this);
 
@@ -88,10 +93,14 @@ public class Main extends Game {
         inputManager = new InputManager();
         Gdx.input.setInputProcessor(new InputMultiplexer(inputManager, stage));
 
-
-        //Set First Screen
+        //Set game viewport
         gameCam = new OrthographicCamera();
         screenViewport = new ExtendViewport(18, 18, gameCam);
+
+        // entity system
+        ecsEngine = new ECSEngine(this);
+
+        //set first screen
         screenCache = new EnumMap<>(ScreenType.class);
         setScreen(ScreenType.LOADING);
 
@@ -102,6 +111,7 @@ public class Main extends Game {
     public void render() {
         super.render();
 
+        ecsEngine.update(Gdx.graphics.getDeltaTime());
         accumulator += Math.min(0.25f, Gdx.graphics.getDeltaTime());
         while (accumulator >= FIXED_TIME) {
             world.step(FIXED_TIME, 6, 2);
@@ -160,6 +170,10 @@ public class Main extends Game {
         assetManager.finishLoading();
         skin = assetManager.get("ui/hud.json", Skin.class);
 
+    }
+
+    public ECSEngine getEcsEngine() {
+        return ecsEngine;
     }
 
     public AudioManager getAudioManager() {
