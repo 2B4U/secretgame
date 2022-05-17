@@ -13,6 +13,5 @@ public class PlayerComponent implements Component, Pool.Poolable{
         hasAxe = false;
         speed.set(0,0);
 
-
     }
 }

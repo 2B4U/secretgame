@@ -36,27 +36,12 @@ public class ECSEngine extends PooledEngine {
         this.addSystem(new PlayerCameraSystem(context));
     }
 
-    private void resetBodiesAndFixtures() {
-        bodyDef.position.set(0, 0);
-        bodyDef.gravityScale = 1;
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.fixedRotation = false;
-
-        fixtureDef.density = 0;
-        fixtureDef.isSensor = false;
-        fixtureDef.restitution = 0;
-        fixtureDef.friction = 0.2f;
-        fixtureDef.filter.categoryBits = 0x0001;
-        fixtureDef.filter.maskBits = -1;
-        fixtureDef.shape = null;
-    }
-
     public void createPlayer(final Vector2 playerStartPos, final float width, final float height){
         final Entity player = this.createEntity();
 
         //add Player Component
         final PlayerComponent playerComponent = this.createComponent(PlayerComponent.class);
-        playerComponent.speed.set(3,3);
+        playerComponent.speed.set(5,5);
         player.add(playerComponent);
 
         //add Box2d component
@@ -80,5 +65,20 @@ public class ECSEngine extends PooledEngine {
 
         player.add(b2DComponent);
         this.addEntity(player);
+    }
+
+    private void resetBodiesAndFixtures() {
+        bodyDef.position.set(0, 0);
+        bodyDef.gravityScale = 1;
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.fixedRotation = false;
+
+        fixtureDef.density = 0;
+        fixtureDef.isSensor = false;
+        fixtureDef.restitution = 0;
+        fixtureDef.friction = 0.2f;
+        fixtureDef.filter.categoryBits = 0x0001;
+        fixtureDef.filter.maskBits = -1;
+        fixtureDef.shape = null;
     }
 }

@@ -103,6 +103,8 @@ public class GameScreen extends AbstractScreen<GameUI> {
         mapRenderer.render();
         box2DDebugRenderer.render(world, viewport.getCamera().combined);
 
+        screenUI.updateFps(delta);
+
         profiler.reset();
 
     }

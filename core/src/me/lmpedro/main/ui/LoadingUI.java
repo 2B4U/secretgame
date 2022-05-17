@@ -19,7 +19,6 @@ public class LoadingUI extends Table {
         progressBar = new ProgressBar(0, 1, 0.1f, false, getSkin(), "default");
         progressBar.setAnimateDuration(5);
 
-
         textButton = new TextButton("[Red]Loading...", getSkin(), "huge");
         textButton.getLabel().setWrap(true);
         textButton.getLabel().setFontScale(2);
