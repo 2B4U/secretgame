@@ -1,0 +1,51 @@
+{
+  "TextButtonStyle": {
+    "normal": {
+      "font": "font_20",
+    },
+    "big": {
+      "font": "font_26",
+    },
+    "small": {
+      "font": "font_16",
+    },
+    "huge": {
+      "font": "font_32",
+    }
+  },
+  "ProgressBarStyle": {
+    "default": {
+      "background": "loadingEmpty",
+      "knob": "loadingKnob",
+      "knobBefore": "loadingFull"
+    }
+  },
+  "TextFieldStyle": {
+    "normal": {
+      "font": "font_20",
+    },
+    "big": {
+      "font": "font_26",
+    },
+    "small": {
+      "font": "font_16",
+    },
+    "huge": {
+      "font": "font_32",
+    }
+  },
+  "LabelStyle": {
+    "normal": {
+      "font": "font_20",
+    },
+    "big": {
+      "font": "font_26",
+    },
+    "small": {
+      "font": "font_16",
+    },
+    "huge": {
+      "font": "font_32",
+    }
+  }
+}
