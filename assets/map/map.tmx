@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="26" height="26" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="60">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="26" height="26" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="61">
  <tileset firstgid="1" source="map.tsx"/>
  <layer id="1" name="ground" width="26" height="26">
   <data encoding="csv">
@@ -115,14 +115,12 @@
   <object id="38" x="16.5" y="17.5">
    <polyline points="0,0 0,224 384,224 384,0 0,0"/>
   </object>
-  <object id="58" x="144" y="192">
-   <polygon points="0,0 96,0 96,48 0,48"/>
-  </object>
+  <object id="60" x="148.636" y="196.303" width="86.5455" height="44.7273"/>
  </objectgroup>
  <objectgroup id="4" name="gameObjects"/>
  <objectgroup id="7" name="textLayer"/>
  <objectgroup id="5" name="playerStartPos">
-  <object id="59" x="290.333" y="123">
+  <object id="59" x="99.333" y="145.333">
    <point/>
   </object>
  </objectgroup>

@@ -67,11 +67,11 @@ public class ECSEngine extends PooledEngine {
         this.addEntity(player);
     }
 
-    public Entity createEnemy(float x, float y, final float width, final float height){
+    public void createEnemy(float x, float y, final float width, final float height){
+
         //create enemy
         Entity enemy = this.createEntity();
         EnemyComponent enemyComponent = this.createComponent(EnemyComponent.class);
-        enemy.add(enemyComponent);
         enemyComponent.xPosCenter = x;
 
 
@@ -98,11 +98,33 @@ public class ECSEngine extends PooledEngine {
         b2DComponent.body.createFixture(fixtureDef);
         eShape.dispose();
 
+        //create agro sensor
+        CircleShape aShape = new CircleShape();
+        aShape.setRadius(9);
+        fixtureDef.shape = aShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = BIT_SENSOR;
+        fixtureDef.filter.maskBits = BIT_PLAYER;
+        b2DComponent.body.createFixture(fixtureDef);
+        aShape.dispose();
+
+        //create agro sensor
+        CircleShape mShape = new CircleShape();
+        mShape.setRadius(2);
+        fixtureDef.shape = mShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = BIT_SENSOR;
+        fixtureDef.filter.maskBits = BIT_PLAYER;
+        b2DComponent.body.createFixture(fixtureDef);
+        mShape.dispose();
+
+
         enemy.add(b2DComponent);
         enemy.add(enemyComponent);
         this.addEntity(enemy);
 
-        return enemy;
+
+
     }
 
     private void resetBodiesAndFixtures() {

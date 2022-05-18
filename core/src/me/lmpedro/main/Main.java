@@ -45,6 +45,7 @@ public class Main extends Game {
     public static final short BIT_PLAYER = 1 << 0;
     public static final short BIT_GROUND = 1 << 1;
     public static final short BIT_ENEMY = 1 << 2;
+    public static final short BIT_SENSOR = 1 << 3;
 
     private World world;
     private WorldContactListener worldContactListener;
