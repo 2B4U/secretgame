@@ -8,18 +8,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import me.lmpedro.main.Main;
-import me.lmpedro.main.ecs.ECSEngine;
-import me.lmpedro.main.ecs.components.B2DComponent;
-import me.lmpedro.main.ecs.system.PlayerCameraSystem;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.CollisionArea;
 import me.lmpedro.main.map.Map;
 import me.lmpedro.main.ui.GameUI;
 
-import static me.lmpedro.main.Main.*;
+import static me.lmpedro.main.Main.BIT_GROUND;
+import static me.lmpedro.main.Main.UNIT_SCALE;
 import static me.lmpedro.main.input.GameKeys.EXIT;
 
 public class GameScreen extends AbstractScreen<GameUI> {
@@ -58,6 +59,7 @@ public class GameScreen extends AbstractScreen<GameUI> {
 
         spawnCollisionArea();
         context.getEcsEngine().createPlayer(map.getStartLocation(), 1,1);
+        context.getEcsEngine().createEnemy(map.getStartLocation().x, map.getStartLocation().y,1,1);
 
     }
 
@@ -103,7 +105,7 @@ public class GameScreen extends AbstractScreen<GameUI> {
         mapRenderer.render();
         box2DDebugRenderer.render(world, viewport.getCamera().combined);
 
-        screenUI.updateFps(delta);
+        screenUI.updateUi(delta);
 
         profiler.reset();
 

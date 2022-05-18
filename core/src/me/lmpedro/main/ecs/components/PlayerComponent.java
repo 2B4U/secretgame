@@ -12,6 +12,5 @@ public class PlayerComponent implements Component, Pool.Poolable{
     public void reset() {
         hasAxe = false;
         speed.set(0,0);
-
     }
 }

@@ -44,6 +44,7 @@ public class Main extends Game {
     public static final float UNIT_SCALE = 1 / 8f;
     public static final short BIT_PLAYER = 1 << 0;
     public static final short BIT_GROUND = 1 << 1;
+    public static final short BIT_ENEMY = 1 << 2;
 
     private World world;
     private WorldContactListener worldContactListener;

@@ -1,13 +1,11 @@
 package me.lmpedro.main.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import me.lmpedro.main.Main;
+import me.lmpedro.main.ecs.components.PlayerComponent;
 
 
 public class GameUI extends Table {
@@ -15,6 +13,7 @@ public class GameUI extends Table {
 
     private final OrthographicCamera hudCam;
     private final Label fpslabel;
+    private final Label position;
 /*
     private final Label playerCords;
 */
@@ -32,13 +31,18 @@ public class GameUI extends Table {
         fpslabel = new Label("fps:", context.getSkin(), "huge");
         fpslabel.setVisible(true);
 
+        position = new Label("position:", context.getSkin(),"huge");
+
+
         add(fpslabel);
         row();
+        add(position);
         top().left();
         setDebug(true, true);
     }
 
-    public void updateFps(float delta){
-        fpslabel.setText("fps: " + Gdx.graphics.getFramesPerSecond());
+    public void updateUi(float delta){
+        position.setText("Coming Soon");
+        fpslabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 }

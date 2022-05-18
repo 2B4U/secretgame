@@ -4,22 +4,21 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.ecs.components.B2DComponent;
+import me.lmpedro.main.ecs.components.EnemyComponent;
 import me.lmpedro.main.ecs.components.PlayerComponent;
+import me.lmpedro.main.ecs.system.EnemySystem;
 import me.lmpedro.main.ecs.system.PlayerCameraSystem;
 import me.lmpedro.main.ecs.system.PlayerMovementSystem;
 
-import static me.lmpedro.main.Main.BIT_GROUND;
-import static me.lmpedro.main.Main.BIT_PLAYER;
+import static me.lmpedro.main.Main.*;
 
 public class ECSEngine extends PooledEngine {
     public static final ComponentMapper<PlayerComponent> playerMapper = ComponentMapper.getFor(PlayerComponent.class);
     public static final ComponentMapper<B2DComponent> b2DMapper = ComponentMapper.getFor(B2DComponent.class);
+    public static final ComponentMapper<EnemyComponent> enemyMapper = ComponentMapper.getFor(EnemyComponent.class);
 
     private final World world;
     private final BodyDef bodyDef;
@@ -34,6 +33,7 @@ public class ECSEngine extends PooledEngine {
 
         this.addSystem(new PlayerMovementSystem(context));
         this.addSystem(new PlayerCameraSystem(context));
+        this.addSystem(new EnemySystem(context));
     }
 
     public void createPlayer(final Vector2 playerStartPos, final float width, final float height){
@@ -56,7 +56,7 @@ public class ECSEngine extends PooledEngine {
         b2DComponent.height = height;
 
         fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_GROUND;
+        fixtureDef.filter.maskBits = BIT_GROUND + BIT_ENEMY;
         final PolygonShape pShape = new PolygonShape();
         pShape.setAsBox(width * 0.5f,height * 0.5f);
         fixtureDef.shape = pShape;
@@ -65,6 +65,43 @@ public class ECSEngine extends PooledEngine {
 
         player.add(b2DComponent);
         this.addEntity(player);
+    }
+
+    public void createEnemy(float x, float y, final float width, final float height){
+        //create enemy
+        final Entity enemy = this.createEntity();
+        EnemyComponent enemyComponent = this.createComponent(EnemyComponent.class);
+        enemy.add(enemyComponent);
+        enemyComponent.xPosCenter = x;
+
+
+        //create Box2d component
+        resetBodiesAndFixtures();
+        final B2DComponent b2DComponent = this.createComponent(B2DComponent.class);
+        bodyDef.position.set(x, y);
+        bodyDef.fixedRotation = true;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.gravityScale = 0;
+        b2DComponent.body = world.createBody(bodyDef);
+        b2DComponent.body.setUserData("ENEMY");
+        b2DComponent.width = width;
+        b2DComponent.height = height;
+
+
+        fixtureDef.filter.categoryBits = BIT_ENEMY;
+        fixtureDef.filter.maskBits = BIT_GROUND + BIT_PLAYER;
+        fixtureDef.density = 10;
+        fixtureDef.restitution = 0;
+        final PolygonShape eShape = new PolygonShape();
+        eShape.setAsBox(width * 0.5f, height * 0.5f);
+        fixtureDef.shape = eShape;
+        b2DComponent.body.createFixture(fixtureDef);
+        eShape.dispose();
+
+        enemy.add(b2DComponent);
+        enemy.add(enemyComponent);
+        this.addEntity(enemy);
+
     }
 
     private void resetBodiesAndFixtures() {
