@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import me.lmpedro.main.Main;
-import me.lmpedro.main.ecs.components.PlayerComponent;
+import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.ecs.components.B2DComponent;
 
 
 public class GameUI extends Table {
@@ -13,7 +14,8 @@ public class GameUI extends Table {
 
     private final OrthographicCamera hudCam;
     private final Label fpslabel;
-    private final Label position;
+    private final Label mousePositionX;
+    private final Label mousePositionY;
 /*
     private final Label playerCords;
 */
@@ -31,18 +33,22 @@ public class GameUI extends Table {
         fpslabel = new Label("fps:", context.getSkin(), "huge");
         fpslabel.setVisible(true);
 
-        position = new Label("position:", context.getSkin(),"huge");
+        mousePositionX = new Label("position:", context.getSkin(),"huge");
+        mousePositionY = new Label("position:", context.getSkin(),"huge");
 
 
-        add(fpslabel);
+        add(mousePositionX);
         row();
-        add(position);
+        add(mousePositionY);
+        row();
+        add(fpslabel);
         top().left();
         setDebug(true, true);
     }
 
     public void updateUi(float delta){
-        position.setText("Coming Soon");
+        mousePositionX.setText("MouseX Pos: " + Gdx.input.getX());
+        mousePositionY.setText("MouseY Pos: " + Gdx.input.getY());
         fpslabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 }

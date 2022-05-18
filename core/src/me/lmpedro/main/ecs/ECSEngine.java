@@ -56,7 +56,7 @@ public class ECSEngine extends PooledEngine {
         b2DComponent.height = height;
 
         fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_GROUND + BIT_ENEMY;
+        fixtureDef.filter.maskBits = BIT_GROUND;
         final PolygonShape pShape = new PolygonShape();
         pShape.setAsBox(width * 0.5f,height * 0.5f);
         fixtureDef.shape = pShape;
@@ -67,9 +67,9 @@ public class ECSEngine extends PooledEngine {
         this.addEntity(player);
     }
 
-    public void createEnemy(float x, float y, final float width, final float height){
+    public Entity createEnemy(float x, float y, final float width, final float height){
         //create enemy
-        final Entity enemy = this.createEntity();
+        Entity enemy = this.createEntity();
         EnemyComponent enemyComponent = this.createComponent(EnemyComponent.class);
         enemy.add(enemyComponent);
         enemyComponent.xPosCenter = x;
@@ -89,7 +89,7 @@ public class ECSEngine extends PooledEngine {
 
 
         fixtureDef.filter.categoryBits = BIT_ENEMY;
-        fixtureDef.filter.maskBits = BIT_GROUND + BIT_PLAYER;
+        fixtureDef.filter.maskBits = BIT_GROUND;
         fixtureDef.density = 10;
         fixtureDef.restitution = 0;
         final PolygonShape eShape = new PolygonShape();
@@ -102,6 +102,7 @@ public class ECSEngine extends PooledEngine {
         enemy.add(enemyComponent);
         this.addEntity(enemy);
 
+        return enemy;
     }
 
     private void resetBodiesAndFixtures() {
