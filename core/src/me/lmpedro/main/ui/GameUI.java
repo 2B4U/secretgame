@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import me.lmpedro.main.Main;
-import me.lmpedro.main.ecs.ECSEngine;
-import me.lmpedro.main.ecs.components.B2DComponent;
 
 
 public class GameUI extends Table {
@@ -30,11 +28,11 @@ public class GameUI extends Table {
         hudCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCam.position.set(hudCam.viewportWidth / 2f, hudCam.viewportHeight / 2f,0);
 
-        fpslabel = new Label("fps:", context.getSkin(), "huge");
+        fpslabel = new Label("fps:", getSkin(), "huge");
         fpslabel.setVisible(true);
 
-        mousePositionX = new Label("position:", context.getSkin(),"huge");
-        mousePositionY = new Label("position:", context.getSkin(),"huge");
+        mousePositionX = new Label("position:", getSkin(),"huge");
+        mousePositionY = new Label("position:", getSkin(),"huge");
 
 
         add(mousePositionX);

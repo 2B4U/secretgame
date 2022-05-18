@@ -20,20 +20,6 @@
       "knobBefore": "loadingFull"
     }
   },
-  "TextFieldStyle": {
-    "normal": {
-      "font": "font_20",
-    },
-    "big": {
-      "font": "font_26",
-    },
-    "small": {
-      "font": "font_16",
-    },
-    "huge": {
-      "font": "font_32",
-    }
-  },
   "LabelStyle": {
     "normal": {
       "font": "font_20",
@@ -45,6 +31,7 @@
       "font": "font_16",
     },
     "huge": {
+      "background": "loadingFull",
       "font": "font_32",
     }
   }

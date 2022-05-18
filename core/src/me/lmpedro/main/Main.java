@@ -170,7 +170,6 @@ public class Main extends Game {
         assetManager.load("ui/hud.json", Skin.class, skinParameter);
         assetManager.finishLoading();
         skin = assetManager.get("ui/hud.json", Skin.class);
-
     }
 
     public ECSEngine getEcsEngine() {
