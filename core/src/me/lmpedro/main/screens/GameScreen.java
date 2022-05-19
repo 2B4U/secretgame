@@ -59,8 +59,7 @@ public class GameScreen extends AbstractScreen<GameUI> {
 
         spawnCollisionArea();
         context.getEcsEngine().createPlayer(map.getStartLocation(), 1,1);
-        context.getEcsEngine().createEnemy(map.getStartLocation().x, map.getStartLocation().y,1,1);
-
+        context.getEcsEngine().createEnemy(map.getStartLocation().x ,map.getStartLocation().y,1,1);
     }
 
     @Override
@@ -90,7 +89,6 @@ public class GameScreen extends AbstractScreen<GameUI> {
             chainShape.dispose();
         }
     }
-
 
     @Override
     public void render(final float delta) {

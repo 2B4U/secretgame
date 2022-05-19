@@ -85,7 +85,7 @@ public class LoadingScreen extends AbstractScreen<LoadingUI> {
     public void keyPressed(InputManager manager, GameKeys key) {
         audioManager.playAudio(AudioType.SELECT);
         if (assetManager.getProgress() >= 1) {
-            context.setScreen(ScreenType.MAINMENU);
+            context.setScreen(ScreenType.GAME);
         }
     }
 

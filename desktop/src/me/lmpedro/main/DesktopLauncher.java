@@ -8,13 +8,12 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setResizable(false);
+		config.setResizable(true);
 /*		config.setDecorated(false);*/
-		config.setMaximized(true);
+		config.setMaximized(false);
 		config.useVsync(false);
-		config.setForegroundFPS(100000);
 		config.setTitle("Secret Game");
-		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+/*		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());*/
 		new Lwjgl3Application(new Main(), config);
 	}
 }

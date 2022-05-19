@@ -7,9 +7,11 @@ import com.badlogic.gdx.utils.Pool;
 public class PlayerComponent implements Component, Pool.Poolable{
     public boolean hasAxe;
     public Vector2 speed = new Vector2();
+    public int health;
 
     @Override
     public void reset() {
+        health = 0;
         hasAxe = false;
         speed.set(0,0);
     }

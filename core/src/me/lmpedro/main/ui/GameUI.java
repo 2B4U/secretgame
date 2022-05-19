@@ -4,12 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import me.lmpedro.main.Main;
+import me.lmpedro.main.ecs.components.PlayerComponent;
 
 
 public class GameUI extends Table {
     /*    private final TextArea textArea ;*/
 
-    private final Label fpslabel;
+    private final Label fpsLabel;
     private final Label mousePositionX;
     private final Label mousePositionY;
 /*
@@ -22,8 +23,8 @@ public class GameUI extends Table {
         setFillParent(true);
 
 
-        fpslabel = new Label("fps:", getSkin(), "huge");
-        fpslabel.setVisible(true);
+        fpsLabel = new Label("fps:", getSkin(), "huge");
+
 
         mousePositionX = new Label("position:", getSkin(),"huge");
         mousePositionY = new Label("position:", getSkin(),"huge");
@@ -33,7 +34,7 @@ public class GameUI extends Table {
         row();
         add(mousePositionY);
         row();
-        add(fpslabel);
+        add(fpsLabel);
         top().left();
         setDebug(true, true);
     }
@@ -41,6 +42,6 @@ public class GameUI extends Table {
     public void updateUi(float delta){
         mousePositionX.setText("MouseX Pos: " + Gdx.input.getX());
         mousePositionY.setText("MouseY Pos: " + Gdx.input.getY());
-        fpslabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+        fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 }

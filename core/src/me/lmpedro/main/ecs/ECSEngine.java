@@ -42,6 +42,7 @@ public class ECSEngine extends PooledEngine {
         //add Player Component
         final PlayerComponent playerComponent = this.createComponent(PlayerComponent.class);
         playerComponent.speed.set(5,5);
+        playerComponent.health = 100;
         player.add(playerComponent);
 
         //add Box2d component
@@ -56,7 +57,7 @@ public class ECSEngine extends PooledEngine {
         b2DComponent.height = height;
 
         fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_GROUND;
+        fixtureDef.filter.maskBits = BIT_GROUND | BIT_SENSOR;
         final PolygonShape pShape = new PolygonShape();
         pShape.setAsBox(width * 0.5f,height * 0.5f);
         fixtureDef.shape = pShape;
@@ -90,8 +91,6 @@ public class ECSEngine extends PooledEngine {
 
         fixtureDef.filter.categoryBits = BIT_ENEMY;
         fixtureDef.filter.maskBits = BIT_GROUND;
-        fixtureDef.density = 10;
-        fixtureDef.restitution = 0;
         final PolygonShape eShape = new PolygonShape();
         eShape.setAsBox(width * 0.5f, height * 0.5f);
         fixtureDef.shape = eShape;
@@ -99,22 +98,25 @@ public class ECSEngine extends PooledEngine {
         eShape.dispose();
 
         //create agro sensor
-        CircleShape aShape = new CircleShape();
-        aShape.setRadius(9);
-        fixtureDef.shape = aShape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = BIT_SENSOR;
         fixtureDef.filter.maskBits = BIT_PLAYER;
+        final CircleShape aShape = new CircleShape();
+        aShape.setRadius(9);
+        b2DComponent.body.setUserData("AGGRO");
+        fixtureDef.shape = aShape;
         b2DComponent.body.createFixture(fixtureDef);
         aShape.dispose();
 
-        //create agro sensor
-        CircleShape mShape = new CircleShape();
-        mShape.setRadius(2);
-        fixtureDef.shape = mShape;
+        //create MELEE sensor
+        final FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = BIT_SENSOR;
         fixtureDef.filter.maskBits = BIT_PLAYER;
+        final CircleShape mShape = new CircleShape();
+        mShape.setRadius(2);
+        b2DComponent.body.setUserData("MELEE");
+        fixtureDef.shape = mShape;
         b2DComponent.body.createFixture(fixtureDef);
         mShape.dispose();
 
