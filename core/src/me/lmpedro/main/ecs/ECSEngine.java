@@ -98,6 +98,7 @@ public class ECSEngine extends PooledEngine {
         eShape.dispose();
 
         //create agro sensor
+
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = BIT_SENSOR;
         fixtureDef.filter.maskBits = BIT_PLAYER;
@@ -108,24 +109,9 @@ public class ECSEngine extends PooledEngine {
         b2DComponent.body.createFixture(fixtureDef);
         aShape.dispose();
 
-        //create MELEE sensor
-        final FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = BIT_SENSOR;
-        fixtureDef.filter.maskBits = BIT_PLAYER;
-        final CircleShape mShape = new CircleShape();
-        mShape.setRadius(2);
-        b2DComponent.body.setUserData("MELEE");
-        fixtureDef.shape = mShape;
-        b2DComponent.body.createFixture(fixtureDef);
-        mShape.dispose();
-
-
         enemy.add(b2DComponent);
         enemy.add(enemyComponent);
         this.addEntity(enemy);
-
-
 
     }
 

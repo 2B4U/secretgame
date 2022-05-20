@@ -149,6 +149,8 @@ public class Main extends Game {
         Colors.put("Red", Color.RED);
         Colors.put("Green", Color.GREEN);
         Colors.put("Blue", Color.BLUE);
+        Colors.put("Black", Color.BLACK);
+        Colors.put("White", Color.WHITE);
 
         //genterate ttf bitmaps
         final ObjectMap<String, Object> rescources = new ObjectMap<>();

@@ -59,7 +59,7 @@ public class GameScreen extends AbstractScreen<GameUI> {
 
         spawnCollisionArea();
         context.getEcsEngine().createPlayer(map.getStartLocation(), 1,1);
-        context.getEcsEngine().createEnemy(map.getStartLocation().x ,map.getStartLocation().y,1,1);
+        context.getEcsEngine().createEnemy(12,32,1,1);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class GameScreen extends AbstractScreen<GameUI> {
         mapRenderer.render();
         box2DDebugRenderer.render(world, viewport.getCamera().combined);
 
-        screenUI.updateUi(delta);
+        screenUI.updateUi(delta,context);
 
         profiler.reset();
 

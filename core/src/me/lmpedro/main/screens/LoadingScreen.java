@@ -39,6 +39,7 @@ public class LoadingScreen extends AbstractScreen<LoadingUI> {
     public void render(final float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        viewport.apply(false);
 
         assetManager.update();
         if (!isMusicLoaded && assetManager.isLoaded(AudioType.INTRO.getFilePath())) {
@@ -61,7 +62,7 @@ public class LoadingScreen extends AbstractScreen<LoadingUI> {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
+        super.resize(width, height);
 
     }
 
@@ -85,7 +86,7 @@ public class LoadingScreen extends AbstractScreen<LoadingUI> {
     public void keyPressed(InputManager manager, GameKeys key) {
         audioManager.playAudio(AudioType.SELECT);
         if (assetManager.getProgress() >= 1) {
-            context.setScreen(ScreenType.GAME);
+            context.setScreen(ScreenType.MAINMENU);
         }
     }
 

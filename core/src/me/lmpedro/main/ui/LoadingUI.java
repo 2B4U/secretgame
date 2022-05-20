@@ -15,7 +15,6 @@ public class LoadingUI extends Table {
         super(context.getSkin());
         setFillParent(true);
 
-
         progressBar = new ProgressBar(0, 1, 0.1f, false, getSkin(), "default");
         progressBar.setAnimateDuration(5);
 

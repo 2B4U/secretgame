@@ -18,7 +18,7 @@ public class MainMenuUI extends Table {
         super(context.getSkin());
         setFillParent(true);
 
-        singlePlayer = new TextButton("[Red]Single Player", getSkin(), "huge");
+        singlePlayer = new TextButton("[White]Single Player", getSkin(), "huge");
         singlePlayer.getLabel().setWrap(true);
         singlePlayer.getLabel().setFontScale(1.5f);
         singlePlayer.addListener(new ClickListener() {
@@ -29,13 +29,13 @@ public class MainMenuUI extends Table {
             }
         });
 
-        settings = new TextButton("[Green]Settings", getSkin(), "huge");
+        settings = new TextButton("[White]Settings", getSkin(), "huge");
         settings.getLabel().setWrap(true);
         settings.getLabel().setFontScale(1.5f);
         /*        settings.pad(20, 40, 33, 40);*/
 
 
-        exit = new TextButton("[Blue]Exit", getSkin(), "huge");
+        exit = new TextButton("[Red]Exit", getSkin(), "huge");
         exit.getLabel().setWrap(true);
         exit.getLabel().setFontScale(1.5f);
         /*        exit.pad(20, 40, 33, 40);*/
@@ -47,9 +47,9 @@ public class MainMenuUI extends Table {
             }
         });
 
-        add(singlePlayer).expandX().fillX().bottom().pad(20, 800, 20, 800).row();
-        add(settings).expandX().fillX().bottom().pad(20, 800, 20, 800).row();
-        add(exit).expandX().fillX().bottom().pad(20, 800, 20, 800);
+        add(singlePlayer).expandX().fillX().bottom().pad(10, 475, 10, 475).row();
+        add(settings).expandX().fillX().bottom().pad(10, 475, 10, 475).row();
+        add(exit).expandX().fillX().bottom().pad(10, 475, 10, 475);
         bottom();
 
         setDebug(true, true);

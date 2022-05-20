@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import me.lmpedro.main.Main;
-import me.lmpedro.main.audio.AudioType;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputListener;
 import me.lmpedro.main.input.InputManager;
@@ -33,13 +32,15 @@ public class MainMenuScreen extends AbstractScreen<MainMenuUI> implements InputL
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        viewport.apply();
+
 /*        audioManager.playAudio(AudioType.INTRO);*/
 
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
+        super.resize(width, height);
     }
 
     @Override
