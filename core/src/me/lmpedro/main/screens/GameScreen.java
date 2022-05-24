@@ -1,40 +1,41 @@
 package me.lmpedro.main.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ChainShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import me.lmpedro.main.Main;
+import me.lmpedro.main.WorldContactListener;
+import me.lmpedro.main.audio.AudioType;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputManager;
-import me.lmpedro.main.map.CollisionArea;
 import me.lmpedro.main.map.Map;
+import me.lmpedro.main.map.MapListener;
+import me.lmpedro.main.map.MapManager;
+import me.lmpedro.main.map.MapType;
 import me.lmpedro.main.ui.GameUI;
 
-import static me.lmpedro.main.Main.BIT_GROUND;
 import static me.lmpedro.main.Main.UNIT_SCALE;
 import static me.lmpedro.main.input.GameKeys.EXIT;
 
-public class GameScreen extends AbstractScreen<GameUI> {
-    private final BodyDef bodyDef;
-    private final FixtureDef fixtureDef;
-
-    private Body player;
-    private SpriteBatch batch;
+public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
     private final AssetManager assetManager;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final OrthographicCamera gameCam;
     private final GLProfiler profiler;
-    private final me.lmpedro.main.map.Map map;
+    private final MapManager mapManager;
     private static final String ID = Main.class.getSimpleName();
 
 
@@ -45,21 +46,16 @@ public class GameScreen extends AbstractScreen<GameUI> {
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, context.getSpriteBatch());
         this.gameCam = context.getGameCam();
 
-        batch = new SpriteBatch();
-
         profiler = new GLProfiler(Gdx.graphics);
-        profiler.enable();
+/*        profiler.enable();*/
 
-        bodyDef = new BodyDef();
-        fixtureDef = new FixtureDef();
 
-        final TiledMap tiledMap = assetManager.get("map/map.tmx", TiledMap.class);
-        mapRenderer.setMap(tiledMap);
-        map = new Map(tiledMap);
-
-        spawnCollisionArea();
-        context.getEcsEngine().createPlayer(map.getStartLocation(), 1,1);
+        mapManager = context.getMapManager();
+        mapManager.addMapListener(this);
+        mapManager.setMap(MapType.MAP_1);
+        context.getEcsEngine().createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f);
         context.getEcsEngine().createEnemy(12,32,1,1);
+
     }
 
     @Override
@@ -67,28 +63,6 @@ public class GameScreen extends AbstractScreen<GameUI> {
         return new GameUI(context);
     }
 
-
-
-    private void spawnCollisionArea() {
-        final BodyDef bodyDef = new BodyDef();
-        final FixtureDef fixtureDef = new FixtureDef();
-        for (final CollisionArea collisionArea : map.getCollisionAreas()) {
-
-            //Create Room
-            bodyDef.position.set(collisionArea.getX(), collisionArea.getY());
-            bodyDef.fixedRotation = true;
-            final Body body = world.createBody(bodyDef);
-            body.setUserData("Ground");
-
-            fixtureDef.filter.categoryBits = BIT_GROUND;
-            fixtureDef.filter.maskBits = -1;
-            final ChainShape chainShape = new ChainShape();
-            chainShape.createChain(collisionArea.getVertices());
-            fixtureDef.shape = chainShape;
-            body.createFixture(fixtureDef);
-            chainShape.dispose();
-        }
-    }
 
     @Override
     public void render(final float delta) {
@@ -98,14 +72,22 @@ public class GameScreen extends AbstractScreen<GameUI> {
         mapRenderer.getBatch().setProjectionMatrix(gameCam.combined);
 
         viewport.apply(false );
+        if (mapRenderer.getMap() != null){
+            mapRenderer.setView(gameCam);
+            mapRenderer.render();
+        }
 
-        mapRenderer.setView(gameCam);
-        mapRenderer.render();
         box2DDebugRenderer.render(world, viewport.getCamera().combined);
 
         screenUI.updateUi(delta,context);
+        audioManager.playAudio(AudioType.INTRO);
 
         profiler.reset();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
+            mapManager.setMap(MapType.MAP_2);
+
+        }
 
     }
 
@@ -139,5 +121,11 @@ public class GameScreen extends AbstractScreen<GameUI> {
     @Override
     public void keyUp(InputManager manager, GameKeys key) {
 
+    }
+
+    @Override
+    public void mapChange(final Map map) {
+        mapRenderer.setMap(map.getTiledMap());
+        map.getTiledMap().getLayers().getByType(TiledMapTileLayer.class);
     }
 }

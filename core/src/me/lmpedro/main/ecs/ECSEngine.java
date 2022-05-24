@@ -114,19 +114,4 @@ public class ECSEngine extends PooledEngine {
         this.addEntity(enemy);
 
     }
-
-    private void resetBodiesAndFixtures() {
-        bodyDef.position.set(0, 0);
-        bodyDef.gravityScale = 1;
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.fixedRotation = false;
-
-        fixtureDef.density = 0;
-        fixtureDef.isSensor = false;
-        fixtureDef.restitution = 0;
-        fixtureDef.friction = 0.2f;
-        fixtureDef.filter.categoryBits = 0x0001;
-        fixtureDef.filter.maskBits = -1;
-        fixtureDef.shape = null;
-    }
 }

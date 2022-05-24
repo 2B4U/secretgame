@@ -13,9 +13,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -26,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.*;
 import me.lmpedro.main.audio.AudioManager;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.input.InputManager;
+import me.lmpedro.main.map.MapManager;
 import me.lmpedro.main.screens.AbstractScreen;
 import me.lmpedro.main.screens.ScreenType;
 import me.lmpedro.main.ui.GameUI;
@@ -41,6 +40,8 @@ public class Main extends Game {
     private OrthographicCamera loadingCam;
     private ExtendViewport screenViewport;
 
+    public static final BodyDef BODY_DEF = new BodyDef();
+    public static final FixtureDef FIXTURE_DEF = new FixtureDef();
     public static final float UNIT_SCALE = 1 / 8f;
     public static final short BIT_PLAYER = 1 << 0;
     public static final short BIT_GROUND = 1 << 1;
@@ -62,6 +63,7 @@ public class Main extends Game {
 
     private InputManager inputManager;
 
+    private MapManager mapManager;
     private ECSEngine ecsEngine;
 
     @Override
@@ -95,9 +97,13 @@ public class Main extends Game {
         inputManager = new InputManager();
         Gdx.input.setInputProcessor(new InputMultiplexer(inputManager, stage));
 
+
         //Set game viewport
         gameCam = new OrthographicCamera();
-        screenViewport = new ExtendViewport(18, 18, gameCam);
+        screenViewport = new ExtendViewport(15, 15, gameCam);
+
+        //map manager
+        mapManager = new MapManager(this);
 
         // entity system
         ecsEngine = new ECSEngine(this);
@@ -106,15 +112,15 @@ public class Main extends Game {
         screenCache = new EnumMap<>(ScreenType.class);
         setScreen(ScreenType.LOADING);
 
-
     }
 
     @Override
     public void render() {
         super.render();
 
-        ecsEngine.update(Gdx.graphics.getDeltaTime());
-        accumulator += Math.min(0.25f, Gdx.graphics.getDeltaTime());
+        final float deltaTime = Math.min(0.25f, Gdx.graphics.getDeltaTime());
+        ecsEngine.update(deltaTime);
+        accumulator += deltaTime;
         while (accumulator >= FIXED_TIME) {
             world.step(FIXED_TIME, 6, 2);
             accumulator -= FIXED_TIME;
@@ -123,7 +129,7 @@ public class Main extends Game {
         /*		final float alpha = accumulator / FIXED_TIME;*/
 
         stage.getViewport().apply();
-        stage.act();
+        stage.act(deltaTime);
         stage.draw();
     }
 
@@ -142,6 +148,21 @@ public class Main extends Game {
             Gdx.app.debug(ID, "Swapping Screen To " + screenType);
             setScreen(screen);
         }
+    }
+
+    public static void resetBodiesAndFixtures() {
+        BODY_DEF.position.set(0, 0);
+        BODY_DEF.gravityScale = 1;
+        BODY_DEF.type = BodyDef.BodyType.StaticBody;
+        BODY_DEF.fixedRotation = false;
+
+        FIXTURE_DEF.density = 0;
+        FIXTURE_DEF.isSensor = false;
+        FIXTURE_DEF.restitution = 0;
+        FIXTURE_DEF.friction = 0.2f;
+        FIXTURE_DEF.filter.categoryBits = 0x0001;
+        FIXTURE_DEF.filter.maskBits = -1;
+        FIXTURE_DEF.shape = null;
     }
 
     private void initializeSkin() {
@@ -173,6 +194,10 @@ public class Main extends Game {
         assetManager.load("ui/hud.json", Skin.class, skinParameter);
         assetManager.finishLoading();
         skin = assetManager.get("ui/hud.json", Skin.class);
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
     }
 
     public ECSEngine getEcsEngine() {

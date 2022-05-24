@@ -122,4 +122,8 @@ public class Map {
     public Vector2 getStartLocation() {
         return startLocation;
     }
+
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
 }

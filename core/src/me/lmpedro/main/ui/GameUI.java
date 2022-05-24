@@ -1,18 +1,25 @@
 package me.lmpedro.main.ui;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import me.lmpedro.main.Main;
+import me.lmpedro.main.WorldContactListener;
 import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.ecs.components.B2DComponent;
+import me.lmpedro.main.ecs.components.EnemyComponent;
 import me.lmpedro.main.ecs.components.PlayerComponent;
 import me.lmpedro.main.input.GameKeys;
 
 
 public class GameUI extends Table {
-    /*    private final TextArea textArea ;*/
+
 
     private final Label fpsLabel;
     private final Label mousePositionX;
@@ -20,11 +27,9 @@ public class GameUI extends Table {
     private final Label playerPosX;
     private final Label playerPosY;
     private final Label maxSpritesInBatch;
-    private final Label test1;
-    private final Label test2;
-/*
-    private final Label playerCords;
-*/
+    private final Label javaHeap;
+    private final Label nativeHeap;
+    private final Label entities;
 
 
     public GameUI(final Main context) {
@@ -41,8 +46,9 @@ public class GameUI extends Table {
         playerPosY = new Label("playerPos:", getSkin(), "huge");
 
         maxSpritesInBatch = new Label("MaxSpritesInBatch",getSkin(),"huge");
-        test1 = new Label("test1", getSkin(), "huge");
-        test2 = new Label("test2", getSkin(), "huge");
+        javaHeap = new Label("javaHeap", getSkin(), "huge");
+        nativeHeap = new Label("nativeHeap", getSkin(), "huge");
+        entities = new Label("entities", getSkin(), "huge");
 
 
         add(mousePositionX);
@@ -57,9 +63,11 @@ public class GameUI extends Table {
         row();
         add(maxSpritesInBatch);
         row();
-        add(test1);
+        add(nativeHeap);
         row();
-        add(test2);
+        add(javaHeap);
+        row();
+        add(entities);
         top().left();
         setDebug(true, true);
     }
@@ -70,6 +78,9 @@ public class GameUI extends Table {
         playerPosX.setText("PlayerPosX " + context.getGameCam().position.x);
         playerPosY.setText("PlayerPosY " + context.getGameCam().position.y);
         maxSpritesInBatch.setText("MaxSpritesInBatch " + context.getSpriteBatch().maxSpritesInBatch);
+        nativeHeap.setText("NativeHeap: " + Gdx.app.getNativeHeap()/1024/1024+"MB");
+        javaHeap.setText("javaHeap: " + Gdx.app.getJavaHeap()/1024/1204+"MB");
         fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+        entities.setText("Entities: " + context.getEcsEngine().getEntities().size());
     }
 }
