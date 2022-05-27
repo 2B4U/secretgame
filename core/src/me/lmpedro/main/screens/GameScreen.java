@@ -28,6 +28,7 @@ import me.lmpedro.main.ui.GameUI;
 
 import static me.lmpedro.main.Main.UNIT_SCALE;
 import static me.lmpedro.main.input.GameKeys.EXIT;
+import static me.lmpedro.main.map.MapType.MAP_2;
 
 public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
@@ -52,9 +53,11 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
         mapManager = context.getMapManager();
         mapManager.addMapListener(this);
-        mapManager.setMap(MapType.MAP_1);
-        context.getEcsEngine().createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f);
-        context.getEcsEngine().createEnemy(12,32,1,1);
+        mapManager.setMap(MAP_2);
+
+            context.getEcsEngine().createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f, 0.7f);
+            context.getEcsEngine().createEnemy(1, 1, 1, 1);
+
 
     }
 
@@ -85,7 +88,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         profiler.reset();
 
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
-            mapManager.setMap(MapType.MAP_2);
+            mapManager.setMap(MAP_2);
 
         }
 

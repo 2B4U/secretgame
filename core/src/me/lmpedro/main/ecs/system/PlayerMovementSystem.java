@@ -4,10 +4,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.B2DComponent;
+import me.lmpedro.main.ecs.components.BulletComponent;
 import me.lmpedro.main.ecs.components.PlayerComponent;
+import me.lmpedro.main.ecs.components.TransformComponent;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputListener;
 import me.lmpedro.main.input.InputManager;
@@ -19,7 +23,7 @@ public class PlayerMovementSystem extends IteratingSystem implements InputListen
     private int yFactor;
 
     public PlayerMovementSystem(final Main context) {
-        super(Family.all(PlayerComponent.class, B2DComponent.class).get());
+        super(Family.all(PlayerComponent.class, B2DComponent.class, BulletComponent.class, TransformComponent.class).get());
         context.getInputManager().addInputListener(this);
         directionChange = false;
         xFactor = yFactor = 0;
@@ -42,6 +46,26 @@ public class PlayerMovementSystem extends IteratingSystem implements InputListen
 
     @Override
     public void keyPressed(InputManager manager, GameKeys key) {
+        if (manager.isMouse1Down){
+            final PlayerComponent player = new PlayerComponent();
+            final Entity entity = new Entity();
+            final B2DComponent b2DComponent = ECSEngine.b2DMapper.get(entity);
+            if (player.timeSinceLastShot <= 0){
+                Vector3 mousePos = new Vector3(manager.mouseLocation.x,manager.mouseLocation.y,0);
+                float speed = 10f;
+                float shooterX = b2DComponent.body.getPosition().x;
+                float shooterY = b2DComponent.body.getPosition().y;
+                float velX = mousePos.x - shooterX;
+                float velY = mousePos.y - shooterY;
+                float length = (float) Math.sqrt(velX * velX + velY * velY);
+                if (length != 0){
+                    velX = velX / length;
+                    velY = velY / length;
+                }
+                ECSEngine.createBullet(shooterX,shooterY,velX*speed, velY*speed);
+                player.timeSinceLastShot = player.shootDelay;
+            }
+        }
 
         switch (key) {
             case LEFT:
