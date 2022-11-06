@@ -6,8 +6,9 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import me.lmpedro.main.Main;
-import me.lmpedro.main.ecs.components.*;
-import me.lmpedro.main.ecs.system.BulletSystem;
+import me.lmpedro.main.ecs.components.B2DComponent;
+import me.lmpedro.main.ecs.components.EnemyComponent;
+import me.lmpedro.main.ecs.components.PlayerComponent;
 import me.lmpedro.main.ecs.system.EnemySystem;
 import me.lmpedro.main.ecs.system.PlayerCameraSystem;
 import me.lmpedro.main.ecs.system.PlayerMovementSystem;
@@ -18,8 +19,6 @@ public class ECSEngine extends PooledEngine {
     public static final ComponentMapper<PlayerComponent> playerMapper = ComponentMapper.getFor(PlayerComponent.class);
     public static final ComponentMapper<B2DComponent> b2DMapper = ComponentMapper.getFor(B2DComponent.class);
     public static final ComponentMapper<EnemyComponent> enemyMapper = ComponentMapper.getFor(EnemyComponent.class);
-    public static final ComponentMapper<BulletComponent> bulletMapper = ComponentMapper.getFor(BulletComponent.class);
-    public static final ComponentMapper<TransformComponent> transformMapper = ComponentMapper.getFor(TransformComponent.class);
 
     private final World world;
     private final BodyDef bodyDef;
@@ -35,42 +34,13 @@ public class ECSEngine extends PooledEngine {
         this.addSystem(new PlayerMovementSystem(context));
         this.addSystem(new PlayerCameraSystem(context));
         this.addSystem(new EnemySystem(context));
-        this.addSystem(new BulletSystem());
     }
-
-    public Entity createBullet(float x, float y, float xVel, float yVel) {
-            final Entity bullet = this.createEntity();
-            final B2DComponent b2body = this.createComponent(B2DComponent.class);
-            final TransformComponent position = this.createComponent(TransformComponent.class);
-            final BulletComponent bul = this.createComponent(BulletComponent.class);
-
-            b2body.body = bodyDef.makeCirclePolyBody(x,y,0.5f, BodyFactory.STONE, BodyDef.BodyType.DynamicBody,true);
-            b2body.body.setBullet(true); // increase physics computation to limit body travelling through other objects
-            fixtureDef.isSensor = true; // make bullets sensors so they don't move player
-            fixtureDef.filter.categoryBits = BIT_BULLET;
-            fixtureDef.filter.maskBits = -1;
-            position.position.set(x,y,0);
-            bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-            b2body.body.setUserData(bullet);
-            bul.xVel = xVel;
-            bul.yVel = yVel;
-
-            bullet.add(position);
-            bullet.add(bul);
-            bullet.add(b2body);
-            this.addEntity(bullet);
-            return bullet;
-        }
 
     public void createPlayer(final Vector2 playerStartPos, final float width, final float height){
         final Entity player = this.createEntity();
 
         //add Player Component
         final PlayerComponent playerComponent = this.createComponent(PlayerComponent.class);
-        final TransformComponent transformComponent = this.createComponent(TransformComponent.class);
-        final BulletComponent bullet = this.createComponent(BulletComponent.class);
-
         playerComponent.speed.set(5,5);
         playerComponent.health = 100;
         player.add(playerComponent);
@@ -94,8 +64,6 @@ public class ECSEngine extends PooledEngine {
         b2DComponent.body.createFixture(fixtureDef);
         pShape.dispose();
 
-        player.add(bullet);
-        player.add(transformComponent);
         player.add(b2DComponent);
         this.addEntity(player);
     }
@@ -122,7 +90,7 @@ public class ECSEngine extends PooledEngine {
 
 
         fixtureDef.filter.categoryBits = BIT_ENEMY;
-        fixtureDef.filter.maskBits = BIT_GROUND | BIT_BULLET;
+        fixtureDef.filter.maskBits = BIT_GROUND;
         final PolygonShape eShape = new PolygonShape();
         eShape.setAsBox(width * 0.5f, height * 0.5f);
         fixtureDef.shape = eShape;
@@ -133,7 +101,7 @@ public class ECSEngine extends PooledEngine {
 
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = BIT_SENSOR;
-        fixtureDef.filter.maskBits = BIT_PLAYER | BIT_GROUND | BIT_BULLET;
+        fixtureDef.filter.maskBits = BIT_PLAYER;
         final CircleShape aShape = new CircleShape();
         aShape.setRadius(9);
         b2DComponent.body.setUserData("AGGRO");

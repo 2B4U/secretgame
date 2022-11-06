@@ -1,6 +1,5 @@
 package me.lmpedro.main;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
@@ -13,12 +12,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -26,8 +23,6 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.*;
 import me.lmpedro.main.audio.AudioManager;
 import me.lmpedro.main.ecs.ECSEngine;
-import me.lmpedro.main.ecs.components.B2DComponent;
-import me.lmpedro.main.ecs.components.TransformComponent;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.MapManager;
 import me.lmpedro.main.screens.AbstractScreen;
@@ -52,10 +47,8 @@ public class Main extends Game {
     public static final short BIT_GROUND = 1 << 1;
     public static final short BIT_ENEMY = 1 << 2;
     public static final short BIT_SENSOR = 1 << 3;
-    public static final short BIT_BULLET = 1 << 4;
 
     private World world;
-    private Array<Entity> bodiesQueue;
     private WorldContactListener worldContactListener;
     private Box2DDebugRenderer box2DDebugRenderer;
 
@@ -131,24 +124,7 @@ public class Main extends Game {
         while (accumulator >= FIXED_TIME) {
             world.step(FIXED_TIME, 6, 2);
             accumulator -= FIXED_TIME;
-
-            for (Entity entity : bodiesQueue) {
-                TransformComponent transform = ECSEngine.transformMapper.get(entity);
-                B2DComponent bodyComp = ECSEngine.b2DMapper.get(entity);
-                Vector2 position = bodyComp.body.getPosition();
-                transform.position.x = position.x;
-                transform.position.y = position.y;
-                transform.rotation = bodyComp.body.getAngle() * MathUtils.radiansToDegrees;
-                if(bodyComp.isDead){
-                    System.out.println("Removing a body and entity");
-                    world.destroyBody(bodyComp.body);
-                    ECSEngine.removeEntity(entity);
-                }
-
-            }
         }
-        bodiesQueue.clear();
-
 
         /*		final float alpha = accumulator / FIXED_TIME;*/
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.Pool;
 
 public class B2DComponent implements Component, Pool.Poolable {
     public Body body;
-    public boolean isDead;
     public float width;
     public float height;
 
