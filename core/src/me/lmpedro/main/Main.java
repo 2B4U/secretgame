@@ -20,14 +20,14 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.badlogic.gdx.utils.viewport.*;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.lmpedro.main.audio.AudioManager;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.MapManager;
 import me.lmpedro.main.screens.AbstractScreen;
 import me.lmpedro.main.screens.ScreenType;
-import me.lmpedro.main.ui.GameUI;
 
 import java.util.EnumMap;
 

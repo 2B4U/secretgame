@@ -22,7 +22,7 @@ public class LoadingScreen extends AbstractScreen<LoadingUI> {
 
         this.assetManager = context.getAssetManager();
         assetManager.load("map/map.tmx", TiledMap.class);
-        assetManager.load("map/map2.tmx", TiledMap.class);
+/*        assetManager.load("map/map2.tmx", TiledMap.class);*/
 
         //load audio files
         isMusicLoaded = false;

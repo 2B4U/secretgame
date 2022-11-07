@@ -1,8 +1,8 @@
 package me.lmpedro.main.map;
 
 public enum MapType {
-    MAP_1("map/map.tmx"),
-    MAP_2("map/map2.tmx");
+    MAP_1("map/map.tmx");
+/*    MAP_2("map/map2.tmx");*/
 
     private final String filePath;
 

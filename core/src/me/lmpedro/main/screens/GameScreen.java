@@ -84,10 +84,10 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
         profiler.reset();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
+/*        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
             mapManager.setMap(MapType.MAP_2);
 
-        }
+        }*/
 
     }
 
