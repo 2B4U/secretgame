@@ -12,6 +12,7 @@ import me.lmpedro.main.ecs.components.PlayerComponent;
 import me.lmpedro.main.ecs.system.EnemySystem;
 import me.lmpedro.main.ecs.system.PlayerCameraSystem;
 import me.lmpedro.main.ecs.system.PlayerMovementSystem;
+import me.lmpedro.main.factorys.BodyFactory;
 
 import static me.lmpedro.main.Main.*;
 
@@ -21,14 +22,14 @@ public class ECSEngine extends PooledEngine {
     public static final ComponentMapper<EnemyComponent> enemyMapper = ComponentMapper.getFor(EnemyComponent.class);
 
     private final World world;
-    private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
+    private final BodyFactory bodyFactory;
 
     public ECSEngine(final Main context){
         super();
 
         world = context.getWorld();
-        bodyDef = new BodyDef();
+        bodyFactory = BodyFactory.getInstance(world);
         fixtureDef = new FixtureDef();
 
         this.addSystem(new PlayerMovementSystem(context));
@@ -48,21 +49,8 @@ public class ECSEngine extends PooledEngine {
         //add Box2d component
         resetBodiesAndFixtures();
         final B2DComponent b2DComponent = this.createComponent(B2DComponent.class);
-        bodyDef.position.set(playerStartPos.x, playerStartPos.y + height * 0.5f);
-        bodyDef.fixedRotation = true;
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        b2DComponent.body = world.createBody(bodyDef);
+        b2DComponent.body = bodyFactory.makeBoxPolyBody(playerStartPos.x,playerStartPos.y + height * 0.5f,1,1,BodyFactory.PLAYER, BodyDef.BodyType.DynamicBody);
         b2DComponent.body.setUserData("PLAYER");
-        b2DComponent.width = width;
-        b2DComponent.height = height;
-
-        fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_GROUND | BIT_SENSOR;
-        final PolygonShape pShape = new PolygonShape();
-        pShape.setAsBox(width * 0.5f,height * 0.5f);
-        fixtureDef.shape = pShape;
-        b2DComponent.body.createFixture(fixtureDef);
-        pShape.dispose();
 
         player.add(b2DComponent);
         this.addEntity(player);
@@ -79,23 +67,9 @@ public class ECSEngine extends PooledEngine {
         //create Box2d component
         resetBodiesAndFixtures();
         final B2DComponent b2DComponent = this.createComponent(B2DComponent.class);
-        bodyDef.position.set(x, y);
-        bodyDef.fixedRotation = true;
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.gravityScale = 0;
-        b2DComponent.body = world.createBody(bodyDef);
+        b2DComponent.body = bodyFactory.makeCirclePolyBody(x,y,1, BodyFactory.ENEMY, BodyDef.BodyType.DynamicBody);
         b2DComponent.body.setUserData("ENEMY");
-        b2DComponent.width = width;
-        b2DComponent.height = height;
 
-
-        fixtureDef.filter.categoryBits = BIT_ENEMY;
-        fixtureDef.filter.maskBits = BIT_GROUND;
-        final PolygonShape eShape = new PolygonShape();
-        eShape.setAsBox(width * 0.5f, height * 0.5f);
-        fixtureDef.shape = eShape;
-        b2DComponent.body.createFixture(fixtureDef);
-        eShape.dispose();
 
         //create agro sensor
 

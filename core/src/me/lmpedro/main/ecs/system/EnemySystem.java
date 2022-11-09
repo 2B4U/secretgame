@@ -24,7 +24,7 @@ public class EnemySystem extends IteratingSystem {
         float distFromOrig = Math.abs(enemyComponent.xPosCenter - b2DComponent.body.getPosition().x);
 
         //if distance > 1 swap direction
-        enemyComponent.isGoingLeft = (distFromOrig > 0)? !enemyComponent.isGoingLeft:enemyComponent.isGoingLeft;
+        enemyComponent.isGoingLeft = (distFromOrig > 2)? !enemyComponent.isGoingLeft:enemyComponent.isGoingLeft;
 
         //set speed base of direction
         float speed = enemyComponent.isGoingLeft?-0.001f:0.001f;

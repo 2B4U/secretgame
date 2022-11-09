@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.WorldContactListener;
 import me.lmpedro.main.audio.AudioType;
+import me.lmpedro.main.factorys.BodyFactory;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.Map;
@@ -41,7 +42,6 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
     public GameScreen(final Main context) {
         super(context);
-
         assetManager = context.getAssetManager();
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, context.getSpriteBatch());
         this.gameCam = context.getGameCam();
@@ -115,6 +115,9 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
     public void keyPressed(InputManager manager, GameKeys key) {
         if (manager.isKeyDown(EXIT)){
             Gdx.app.exit();
+        }
+        if (manager.isKeyDown(GameKeys.SELECT)){
+            context.getEcsEngine().createEnemy(15,32,1,1);
         }
     }
 
