@@ -19,6 +19,7 @@ import me.lmpedro.main.Main;
 import me.lmpedro.main.WorldContactListener;
 import me.lmpedro.main.audio.AudioType;
 import me.lmpedro.main.factorys.BodyFactory;
+import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.Map;
@@ -37,6 +38,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
     private final OrthographicCamera gameCam;
     private final GLProfiler profiler;
     private final MapManager mapManager;
+    private final WorldFactory worldFactory;
     private static final String ID = Main.class.getSimpleName();
 
 
@@ -53,8 +55,9 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         mapManager = context.getMapManager();
         mapManager.addMapListener(this);
         mapManager.setMap(MapType.MAP_1);
-        context.getEcsEngine().createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f);
-        context.getEcsEngine().createEnemy(12,32,1,1);
+        worldFactory = new WorldFactory(context);
+        worldFactory.createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f);
+        worldFactory.createEnemy(12,32,1,1);
 
     }
 
@@ -117,7 +120,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
             Gdx.app.exit();
         }
         if (manager.isKeyDown(GameKeys.SELECT)){
-            context.getEcsEngine().createEnemy(15,32,1,1);
+            worldFactory.createEnemy(15,32,1,1);
         }
     }
 

@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.lmpedro.main.audio.AudioManager;
 import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.MapManager;
 import me.lmpedro.main.screens.AbstractScreen;
@@ -49,6 +50,7 @@ public class Main extends Game {
     public static final short BIT_SENSOR = 1 << 3;
 
     private World world;
+    private WorldFactory worldFactory;
     private WorldContactListener worldContactListener;
     private Box2DDebugRenderer box2DDebugRenderer;
 
@@ -71,7 +73,6 @@ public class Main extends Game {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         spriteBatch = new SpriteBatch();
-
 
         //Box2D Stuff
         accumulator = 0;
@@ -107,6 +108,8 @@ public class Main extends Game {
 
         // entity system
         ecsEngine = new ECSEngine(this);
+
+        worldFactory = new WorldFactory(this);
 
         //set first screen
         screenCache = new EnumMap<>(ScreenType.class);

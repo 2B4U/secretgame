@@ -10,11 +10,10 @@ public class BodyFactory {
 
     public static final int PLAYER = 0;
     public static final int ENEMY = 1;
-    public static final int RUBBER = 2;
-    public static final int STONE = 3;
+
 
     private static BodyFactory thisInstance;
-    private World world;
+    private final World world;
 
     private BodyFactory(World world){
         this.world = world;
@@ -34,8 +33,8 @@ public class BodyFactory {
         switch(material){
             case 0:
                 fixtureDef.density = 1f;
-                fixtureDef.friction = 0.3f;
-                fixtureDef.restitution = 0.1f;
+                fixtureDef.friction = 0f;
+                fixtureDef.restitution = 0.2f;
                 fixtureDef.filter.categoryBits = BIT_PLAYER;
                 fixtureDef.filter.maskBits = BIT_GROUND | BIT_SENSOR | BIT_ENEMY;
                 break;
@@ -46,15 +45,6 @@ public class BodyFactory {
                 fixtureDef.filter.categoryBits = BIT_ENEMY;
                 fixtureDef.filter.maskBits = BIT_GROUND | BIT_PLAYER | BIT_ENEMY;
                 break;
-            case 2:
-                fixtureDef.density = 1f;
-                fixtureDef.friction = 0f;
-                fixtureDef.restitution = 1f;
-                break;
-            case 3:
-                fixtureDef.density = 1f;
-                fixtureDef.friction = 0.9f;
-                fixtureDef.restitution = 0.01f;
             default:
                 fixtureDef.density = 7f;
                 fixtureDef.friction = 0.5f;
