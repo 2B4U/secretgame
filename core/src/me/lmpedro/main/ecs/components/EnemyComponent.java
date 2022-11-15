@@ -4,11 +4,11 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
 public class EnemyComponent implements Component, Pool.Poolable {
-    public boolean isDead;
+    public boolean isDead = false;
     public float xPosCenter;
-    public boolean isGoingLeft;
+    public boolean isGoingLeft = false;
     public float health;
-    public boolean isAggro;
+    public boolean isAggro = false;
 
     @Override
     public void reset() {

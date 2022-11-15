@@ -8,11 +8,13 @@ public class PlayerComponent implements Component, Pool.Poolable{
     public boolean hasAxe;
     public Vector2 speed = new Vector2();
     public int health;
+    public boolean isDead;
 
     @Override
     public void reset() {
         health = 0;
         hasAxe = false;
         speed.set(0,0);
+        isDead = false;
     }
 }

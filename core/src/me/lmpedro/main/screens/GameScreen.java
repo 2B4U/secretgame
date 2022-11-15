@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.WorldContactListener;
 import me.lmpedro.main.audio.AudioType;
+import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.factorys.BodyFactory;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
@@ -39,6 +40,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
     private final GLProfiler profiler;
     private final MapManager mapManager;
     private final WorldFactory worldFactory;
+    private final ECSEngine ecsEngine;
     private static final String ID = Main.class.getSimpleName();
 
 
@@ -51,13 +53,14 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         profiler = new GLProfiler(Gdx.graphics);
 /*        profiler.enable();*/
 
-
+        ecsEngine = context.getEcsEngine();
         mapManager = context.getMapManager();
         mapManager.addMapListener(this);
         mapManager.setMap(MapType.MAP_1);
+
         worldFactory = new WorldFactory(context);
         worldFactory.createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f);
-        worldFactory.createEnemy(12,32,1,1);
+        worldFactory.createEnemy(12,34,1,1);
 
     }
 

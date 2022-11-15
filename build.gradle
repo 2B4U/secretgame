@@ -17,7 +17,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '1.0'
+    version = 'pre-alpha-1.0'
     ext {
         appName = "secret"
         gdxVersion = '1.11.0'

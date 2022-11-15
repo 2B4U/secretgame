@@ -8,9 +8,12 @@ public class B2DComponent implements Component, Pool.Poolable {
     public Body body;
     public float width;
     public float height;
+    public boolean isDead = false;
 
     @Override
     public void reset() {
+        isDead = false;
+
         if(body != null){
             body.getWorld().destroyBody(body);
             body = null;

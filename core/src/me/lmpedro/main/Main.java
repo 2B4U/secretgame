@@ -1,5 +1,7 @@
 package me.lmpedro.main;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
@@ -16,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -24,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.lmpedro.main.audio.AudioManager;
 import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.ecs.components.B2DComponent;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.MapManager;
@@ -44,10 +48,9 @@ public class Main extends Game {
     public static final BodyDef BODY_DEF = new BodyDef();
     public static final FixtureDef FIXTURE_DEF = new FixtureDef();
     public static final float UNIT_SCALE = 1 / 8f;
-    public static final short BIT_PLAYER = 1 << 0;
     public static final short BIT_GROUND = 1 << 1;
-    public static final short BIT_ENEMY = 1 << 2;
-    public static final short BIT_SENSOR = 1 << 3;
+
+    private ComponentMapper<B2DComponent> bm = ComponentMapper.getFor(B2DComponent.class);
 
     private World world;
     private WorldFactory worldFactory;
@@ -78,8 +81,9 @@ public class Main extends Game {
         accumulator = 0;
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
-        worldContactListener = new WorldContactListener();
+        worldContactListener = new WorldContactListener(this);
         world.setContactListener(worldContactListener);
+
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         //Initialize AssetManager
@@ -121,15 +125,10 @@ public class Main extends Game {
     public void render() {
         super.render();
 
+
         final float deltaTime = Math.min(0.25f, Gdx.graphics.getDeltaTime());
         ecsEngine.update(deltaTime);
-        accumulator += deltaTime;
-        while (accumulator >= FIXED_TIME) {
-            world.step(FIXED_TIME, 6, 2);
-            accumulator -= FIXED_TIME;
-        }
 
-        /*		final float alpha = accumulator / FIXED_TIME;*/
 
         stage.getViewport().apply();
         stage.act(deltaTime);
@@ -241,6 +240,10 @@ public class Main extends Game {
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public WorldFactory getWorldFactory() {
+        return worldFactory;
     }
 
     public InputManager getInputManager() {

@@ -13,7 +13,7 @@ public class BodyFactory {
 
 
     private static BodyFactory thisInstance;
-    private final World world;
+    private World world;
 
     private BodyFactory(World world){
         this.world = world;
@@ -22,6 +22,8 @@ public class BodyFactory {
     public static BodyFactory getInstance(World world){
         if(thisInstance == null){
             thisInstance = new BodyFactory(world);
+        }else{
+            thisInstance.world = world;
         }
         return thisInstance;
     }
@@ -35,18 +37,14 @@ public class BodyFactory {
                 fixtureDef.density = 1f;
                 fixtureDef.friction = 0f;
                 fixtureDef.restitution = 0.2f;
-                fixtureDef.filter.categoryBits = BIT_PLAYER;
-                fixtureDef.filter.maskBits = BIT_GROUND | BIT_SENSOR | BIT_ENEMY;
                 break;
             case 1:
-                fixtureDef.density = 0.5f;
-                fixtureDef.friction = 0.7f;
-                fixtureDef.restitution = 0.3f;
-                fixtureDef.filter.categoryBits = BIT_ENEMY;
-                fixtureDef.filter.maskBits = BIT_GROUND | BIT_PLAYER | BIT_ENEMY;
+                fixtureDef.density = 0f;
+                fixtureDef.friction = 0f;
+                fixtureDef.restitution = 0f;
                 break;
             default:
-                fixtureDef.density = 7f;
+                fixtureDef.density = 0f;
                 fixtureDef.friction = 0.5f;
                 fixtureDef.restitution = 0.3f;
         }
