@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.audio.AudioManager;
+import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.InputListener;
 import me.lmpedro.main.input.InputManager;
 
@@ -21,6 +22,7 @@ public abstract class AbstractScreen<T extends Table> implements Screen, InputLi
     protected final T screenUI;
     protected final InputManager inputManager;
     protected final AudioManager audioManager;
+    protected final WorldFactory worldFactory;
 
     public AbstractScreen(final Main context) {
         this.context = context;
@@ -28,6 +30,7 @@ public abstract class AbstractScreen<T extends Table> implements Screen, InputLi
         viewport = context.getScreenViewport();
         this.box2DDebugRenderer = context.getBox2DDebugRenderer();
         inputManager = context.getInputManager();
+        this.worldFactory = context.getWorldFactory();
 
         stage = context.getStage();
         screenUI = getScreenUI(context);

@@ -10,6 +10,7 @@ public class BodyFactory {
 
     public static final int PLAYER = 0;
     public static final int ENEMY = 1;
+    public static final int BULLET = 2;
 
 
     private static BodyFactory thisInstance;
@@ -109,5 +110,21 @@ public class BodyFactory {
         polygon.dispose();
 
         return boxBody;
+    }
+
+    public Body makeBullet(float posx, float posy, float radius, int material, BodyDef.BodyType bodyType){
+        Body body = makeCirclePolyBody( posx,  posy,  radius,  material,  bodyType,  false);
+        for(Fixture fix :body.getFixtureList()){
+            fix.setSensor(true);
+        }
+        body.setBullet(true);
+        return body;
+    }
+
+
+    public void makeAllFixturesSensors(Body bod){
+        for(Fixture fix :bod.getFixtureList()){
+            fix.setSensor(true);
+        }
     }
 }

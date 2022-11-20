@@ -48,10 +48,6 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        final Fixture fixtureA = contact.getFixtureA();
-        final Fixture fixtureB = contact.getFixtureB();
-
-        Gdx.app.debug("CONTACT", "END ");
         Gdx.app.debug("CONTACT", "END ");
     }
 

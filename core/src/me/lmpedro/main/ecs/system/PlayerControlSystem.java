@@ -1,26 +1,41 @@
 package me.lmpedro.main.ecs.system;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.World;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.B2DComponent;
 import me.lmpedro.main.ecs.components.PlayerComponent;
+import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputListener;
 import me.lmpedro.main.input.InputManager;
 
-public class PlayerMovementSystem extends IteratingSystem implements InputListener {
+public class PlayerControlSystem extends IteratingSystem implements InputListener {
     private static final String ID = Main.class.getSimpleName();
     private boolean directionChange;
+    private final WorldFactory worldFactory;
+    private final InputManager manager;
+    private final Main context;
+
+    private final World world;
     private int xFactor;
     private int yFactor;
 
-    public PlayerMovementSystem(final Main context) {
-        super(Family.all(PlayerComponent.class, B2DComponent.class).get());
+
+    public PlayerControlSystem(Main context, World world) {
+        super(Family.all(PlayerComponent.class).get());
         context.getInputManager().addInputListener(this);
+        this.context = context;
+        this.world = world;
+        manager = context.getInputManager();
+        worldFactory = context.getWorldFactory();
         directionChange = false;
         xFactor = yFactor = 0;
     }
@@ -38,7 +53,41 @@ public class PlayerMovementSystem extends IteratingSystem implements InputListen
                     (yFactor * playerComponent.speed.y - b2DComponent.body.getLinearVelocity().y) * b2DComponent.body.getMass(),
                     b2DComponent.body.getWorldCenter().x, b2DComponent.body.getWorldCenter().y, true);
         }
+
+        final PlayerComponent playerComponent = ECSEngine.playerMapper.get(entity);
+        final B2DComponent b2DComponent = ECSEngine.b2DMapper.get(entity);
+
+        if(playerComponent.timeSinceLastShot > 0){
+            playerComponent.timeSinceLastShot -= deltaTime;
+        }
+
+        if (manager.isMouse1Down) { // if mouse button is pressed
+            // user wants to fire
+
+
+            if (playerComponent.timeSinceLastShot <= 0) { // check the player hasn't just shot
+                //player can shoot so do player shoot
+                Vector3 mousePos = new Vector3(manager.mouseLocation.x,manager.mouseLocation.y, 0); // get mouse position
+                playerComponent.cam.unproject(mousePos); // convert position from screen to box2d world position
+                float speed = 10f;  // set the speed of the bullet
+                float shooterX = b2DComponent.body.getPosition().x; // get player location
+                float shooterY = b2DComponent.body.getPosition().y; // get player location
+                float velx = mousePos.x - shooterX; // get distance from shooter to target on x plain
+                float vely = mousePos.y - shooterY; // get distance from shooter to target on y plain
+                float length = (float) Math.sqrt(velx * velx + vely * vely); // get distance to target direct
+                if (length != 0) {
+                    velx = velx / length;  // get required x velocity to aim at target
+                    vely = vely / length;  // get required y velocity to aim at target
+                }
+                final WorldFactory worldFactory = new WorldFactory(context);
+                // create a bullet
+                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed);
+                //reset timeSinceLastShot
+                playerComponent.timeSinceLastShot = playerComponent.shootDelay;
+            }
+        }
     }
+
 
     @Override
     public void keyPressed(InputManager manager, GameKeys key) {
@@ -91,5 +140,20 @@ public class PlayerMovementSystem extends IteratingSystem implements InputListen
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
     }
 }

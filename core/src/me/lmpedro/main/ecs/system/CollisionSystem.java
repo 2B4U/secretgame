@@ -6,16 +6,15 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import me.lmpedro.main.Main;
-import me.lmpedro.main.ecs.components.CollisionComponent;
-import me.lmpedro.main.ecs.components.PlayerComponent;
-import me.lmpedro.main.ecs.components.TypeComponent;
+import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.ecs.components.*;
 
 public class CollisionSystem extends IteratingSystem {
     ComponentMapper<CollisionComponent> cm;
     ComponentMapper<PlayerComponent> pm;
 
     @SuppressWarnings("unchecked")
-    public CollisionSystem(final Main context) {
+    public CollisionSystem() {
 
         super(Family.all(CollisionComponent.class).get());
 
@@ -35,15 +34,19 @@ public class CollisionSystem extends IteratingSystem {
 
         // Do Player Collisions
         if(thisType.type == TypeComponent.PLAYER){
-            PlayerComponent pl = pm.get(entity);
+            PlayerComponent player = pm.get(entity);
             if(collidedEntity != null){
                 TypeComponent type = collidedEntity.getComponent(TypeComponent.class);
                 if(type != null){
                     switch(type.type){
                         case TypeComponent.ENEMY:
                             //do player hit enemy thing
-                            pl.isDead = true;
-                            System.out.println("player hit enemy");
+                            player.health -= 20;
+                            System.out.println("player hit enemy" + player.health);
+                            if(player.health == 0){
+                                player.isDead = true;
+                                System.out.println("Player is Dead");
+                            }
                             break;
                         case TypeComponent.SCENERY:
                             //do player hit scenery thing
@@ -53,12 +56,15 @@ public class CollisionSystem extends IteratingSystem {
                             //do player hit other thing
                             System.out.println("player hit other");
                             break;
+                        case TypeComponent.BULLET:
+                                System.out.println("player hit bullet");
+                                break;
                         default:
                             System.out.println("No matching type found");
                     }
                     cc.collisionEntity = null; // collision handled reset component
                 }else{
-                    System.out.println("type == null");
+                    System.out.println("Player: collidedEntity.type == null");
                 }
             }
         }else if(thisType.type == TypeComponent.ENEMY){  	// Do enemy collisions
@@ -68,7 +74,7 @@ public class CollisionSystem extends IteratingSystem {
                     switch(type.type){
                         case TypeComponent.PLAYER:
                             System.out.println("enemy hit player");
-                            Gdx.app.debug("","enemy hit player");
+
                             break;
                         case TypeComponent.ENEMY:
                             System.out.println("enemy hit enemy");
@@ -78,6 +84,14 @@ public class CollisionSystem extends IteratingSystem {
                             break;
                         case TypeComponent.OTHER:
                             System.out.println("enemy hit other");
+                            break;
+                        case TypeComponent.BULLET:
+                            System.out.println("enemy hit bullet");
+                            EnemyComponent enemy = ECSEngine.enemyMapper.get(entity);
+                            BulletComponent bullet = ECSEngine.bulletMapper.get(collidedEntity);
+                                bullet.isDead = true;
+                                enemy.isDead = true;
+                                System.out.println("enemy got shot");
                             break;
                         default:
                             System.out.println("No matching type found");

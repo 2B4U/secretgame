@@ -1,5 +1,6 @@
 package me.lmpedro.main.ecs.system;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -11,16 +12,22 @@ import me.lmpedro.main.ecs.components.EnemyComponent;
 
 public class EnemySystem extends IteratingSystem {
 
+    private ComponentMapper<EnemyComponent> em;
+    private ComponentMapper<B2DComponent> bodm;
+
 
     public EnemySystem(final Main context) {
         super(Family.all(EnemyComponent.class, B2DComponent.class).get());
+        em = ComponentMapper.getFor(EnemyComponent.class);
+        bodm = ComponentMapper.getFor(B2DComponent.class);
     }
 
     @Override
     protected void processEntity(final Entity entity, final float deltaTime) {
-        EnemyComponent enemyComponent = ECSEngine.enemyMapper.get(entity);
-        B2DComponent b2DComponent = ECSEngine.b2DMapper.get(entity);
-
+/*        EnemyComponent enemyComponent = ECSEngine.enemyMapper.get(entity);
+        B2DComponent b2DComponent = ECSEngine.b2DMapper.get(entity);*/
+        EnemyComponent enemyComponent = em.get(entity);		// get EnemyComponent
+        B2DComponent b2DComponent = bodm.get(entity);
 
         //get distance of enemy from its original start position(pad center)
         float distFromOrig = Math.abs(enemyComponent.xPosCenter - b2DComponent.body.getPosition().x);

@@ -18,7 +18,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -48,7 +47,7 @@ public class Main extends Game {
     public static final BodyDef BODY_DEF = new BodyDef();
     public static final FixtureDef FIXTURE_DEF = new FixtureDef();
     public static final float UNIT_SCALE = 1 / 8f;
-    public static final short BIT_GROUND = 1 << 1;
+    public static final short BIT_GROUND = 3;
 
     private ComponentMapper<B2DComponent> bm = ComponentMapper.getFor(B2DComponent.class);
 
@@ -56,9 +55,6 @@ public class Main extends Game {
     private WorldFactory worldFactory;
     private WorldContactListener worldContactListener;
     private Box2DDebugRenderer box2DDebugRenderer;
-
-    private static final float FIXED_TIME = 1 / 60f;
-    private float accumulator;
 
     private AssetManager assetManager;
     private AudioManager audioManager;
@@ -71,18 +67,20 @@ public class Main extends Game {
     private MapManager mapManager;
     private ECSEngine ecsEngine;
 
+
     @Override
     public void create() {
+
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         spriteBatch = new SpriteBatch();
 
         //Box2D Stuff
-        accumulator = 0;
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
         worldContactListener = new WorldContactListener(this);
         world.setContactListener(worldContactListener);
+
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
@@ -125,10 +123,8 @@ public class Main extends Game {
     public void render() {
         super.render();
 
-
         final float deltaTime = Math.min(0.25f, Gdx.graphics.getDeltaTime());
         ecsEngine.update(deltaTime);
-
 
         stage.getViewport().apply();
         stage.act(deltaTime);

@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -20,7 +21,6 @@ public class PhysicsSystem extends IteratingSystem {
     private float accumulator;
 
 
-    private ECSEngine ecsEngine;
     private Array<Entity> bodiesQueue;
     private World world;
 
@@ -28,15 +28,16 @@ public class PhysicsSystem extends IteratingSystem {
     private ComponentMapper<TransformComponent> tm = ComponentMapper.getFor(TransformComponent.class);
 
     @SuppressWarnings("unchecked")
-    public PhysicsSystem(Main context, World world) {
+    public PhysicsSystem(World world) {
         super(Family.all(B2DComponent.class, TransformComponent.class).get());
-        ecsEngine = context.getEcsEngine();
+
         this.world = world;
-        this.bodiesQueue = new Array<Entity>();
+        this.bodiesQueue = new Array<>();
     }
 
     @Override
     public void update(float delta) {
+        super.update(delta);
 
         float deltaTime = Math.min(0.25f, Gdx.graphics.getDeltaTime());
 
@@ -52,11 +53,12 @@ public class PhysicsSystem extends IteratingSystem {
                 Vector2 position = bodyComp.body.getPosition();
                 tfm.position.x = position.x;
                 tfm.position.y = position.y;
-                /*            tfm.rotation = bodyComp.body.getAngle() * MathUtils.radiansToDegrees;*/
+                tfm.rotation = bodyComp.body.getAngle() * MathUtils.radiansToDegrees;
                 if (bodyComp.isDead) {
                     System.out.println("Removing a body and entity");
                     world.destroyBody(bodyComp.body);
-                    ecsEngine.removeEntity(entity);
+                    getEngine().removeEntity(entity);
+
                 }
             }
 

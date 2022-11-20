@@ -1,11 +1,15 @@
 package me.lmpedro.main.map;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import me.lmpedro.main.Main;
+import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.ecs.components.TypeComponent;
+import me.lmpedro.main.factorys.BodyFactory;
 import me.lmpedro.main.factorys.WorldFactory;
 
 import java.util.EnumMap;

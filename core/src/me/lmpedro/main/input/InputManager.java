@@ -1,6 +1,7 @@
 package me.lmpedro.main.input;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class InputManager implements InputProcessor {
@@ -8,6 +9,9 @@ public class InputManager implements InputProcessor {
     private final boolean[] keyState;
     private final Array<InputListener> listeners;
     public boolean keyPressed;
+    public boolean isMouse1Down, isMouse2Down, isMouse3Down;
+    private boolean isDragged;
+    public Vector2 mouseLocation = new Vector2(0, 0);
 
     public InputManager() {
         this.keyMapping = new GameKeys[256];
@@ -74,11 +78,32 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(button == 0){
+            isMouse1Down = true;
+        }else if(button == 1){
+            isMouse2Down = true;
+        }else if(button == 2){
+            isMouse3Down = true;
+        }
+        mouseLocation.x = screenX;
+        mouseLocation.y = screenY;
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        isDragged = false;
+        System.out.println(button);
+        if (button == 0) {
+            isMouse1Down = false;
+        } else if (button == 1) {
+            isMouse2Down = false;
+        } else if (button == 2) {
+            isMouse3Down = false;
+        }
+        mouseLocation.x = screenX;
+        mouseLocation.y = screenY;
+        // TODO Auto-generated method stub
         return false;
     }
 
@@ -89,8 +114,11 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
+            mouseLocation.x = screenX;
+            mouseLocation.y = screenY;
+            // TODO Auto-generated method stub
+            return false;
+        }
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
