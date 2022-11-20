@@ -38,7 +38,10 @@ public class BulletSystem extends IteratingSystem {
         float by = b2body.body.getPosition().y;
 
         // if bullet is 20 units away from player on any axis then it is probably off screen
-        if(bx - px > 5 || by - py > 5){
+        if(px - bx > 7 || py - by > 6){
+            bullet.isDead = true;
+        }
+        if(bx - px > 7 || by - py > 6){
             bullet.isDead = true;
         }
 
