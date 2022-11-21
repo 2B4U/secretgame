@@ -47,7 +47,6 @@ public class BulletSystem extends IteratingSystem {
 
         //check if bullet is dead
         if(bullet.isDead){
-            System.out.println("Bullet died");
             b2body.isDead = true;
         }
     }

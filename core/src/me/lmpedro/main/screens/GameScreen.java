@@ -2,28 +2,16 @@ package me.lmpedro.main.screens;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import me.lmpedro.main.Main;
-import me.lmpedro.main.WorldContactListener;
 import me.lmpedro.main.audio.AudioType;
 import me.lmpedro.main.ecs.ECSEngine;
-import me.lmpedro.main.ecs.components.B2DComponent;
-import me.lmpedro.main.ecs.components.PlayerComponent;
-import me.lmpedro.main.factorys.BodyFactory;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputManager;
@@ -58,7 +46,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         this.gameCam = context.getGameCam();
 
         profiler = new GLProfiler(Gdx.graphics);
-/*        profiler.enable();*/
+        profiler.enable();
 
 
         mapManager = context.getMapManager();
@@ -144,32 +132,6 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         if (manager.isKeyDown(GameKeys.SELECT)){
             worldFactory.createEnemy(15,32,1,1);
         }
-       /* if (manager.isMouse1Down) { // if mouse button is pressed
-            // user wants to fire
-
-            final PlayerComponent playerComponent = ECSEngine.playerMapper.get(worldFactory.player);
-            final B2DComponent b2DComponent = ECSEngine.b2DMapper.get(worldFactory.player);
-
-            if (playerComponent.timeSinceLastShot <= 0) { // check the player hasn't just shot
-                //player can shoot so do player shoot
-                Vector3 mousePos = new Vector3(manager.mouseLocation.x,manager.mouseLocation.y, 0); // get mouse position
-                playerComponent.cam.unproject(mousePos); // convert position from screen to box2d world position
-                float speed = 10f;  // set the speed of the bullet
-                float shooterX = b2DComponent.body.getPosition().x; // get player location
-                float shooterY = b2DComponent.body.getPosition().y; // get player location
-                float velx = mousePos.x - shooterX; // get distance from shooter to target on x plain
-                float vely = mousePos.y - shooterY; // get distance from shooter to target on y plain
-                float length = (float) Math.sqrt(velx * velx + vely * vely); // get distance to target direct
-                if (length != 0) {
-                    velx = velx / length;  // get required x velocity to aim at target
-                    vely = vely / length;  // get required y velocity to aim at target
-                }
-                // create a bullet
-                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed);
-                //reset timeSinceLastShot
-                playerComponent.timeSinceLastShot = playerComponent.shootDelay;
-            }
-        }*/
     }
 
     @Override

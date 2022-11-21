@@ -148,21 +148,6 @@ public class Main extends Game {
         }
     }
 
-    public static void resetBodiesAndFixtures() {
-        BODY_DEF.position.set(0, 0);
-        BODY_DEF.gravityScale = 1;
-        BODY_DEF.type = BodyDef.BodyType.StaticBody;
-        BODY_DEF.fixedRotation = false;
-
-        FIXTURE_DEF.density = 0;
-        FIXTURE_DEF.isSensor = false;
-        FIXTURE_DEF.restitution = 0;
-        FIXTURE_DEF.friction = 0.2f;
-        FIXTURE_DEF.filter.categoryBits = 0x0001;
-        FIXTURE_DEF.filter.maskBits = -1;
-        FIXTURE_DEF.shape = null;
-    }
-
     private void initializeSkin() {
         //setup markup colours
         Colors.put("Red", Color.RED);

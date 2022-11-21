@@ -63,8 +63,6 @@ public class PlayerControlSystem extends IteratingSystem implements InputListene
 
         if (manager.isMouse1Down) { // if mouse button is pressed
             // user wants to fire
-
-
             if (playerComponent.timeSinceLastShot <= 0) { // check the player hasn't just shot
                 //player can shoot so do player shoot
                 Vector3 mousePos = new Vector3(manager.mouseLocation.x,manager.mouseLocation.y, 0); // get mouse position
@@ -74,14 +72,36 @@ public class PlayerControlSystem extends IteratingSystem implements InputListene
                 float shooterY = b2DComponent.body.getPosition().y; // get player location
                 float velx = mousePos.x - shooterX; // get distance from shooter to target on x plain
                 float vely = mousePos.y - shooterY; // get distance from shooter to target on y plain
+
+                float velx1 = mousePos.x + 0.5f - shooterX; // get distance from shooter to target on x plain
+                float vely1 = mousePos.y + 0.5f - shooterY; // get distance from shooter to target on y plain
+
+                float velx2 = mousePos.x - 0.5f - shooterX; // get distance from shooter to target on x plain
+                float vely2 = mousePos.y - 0.5f - shooterY; // get distance from shooter to target on y plain
                 float length = (float) Math.sqrt(velx * velx + vely * vely); // get distance to target direct
                 if (length != 0) {
                     velx = velx / length;  // get required x velocity to aim at target
                     vely = vely / length;  // get required y velocity to aim at target
+                    velx1 = velx1 / length;
+                    vely1 = vely1 / length;
+                    velx2 = velx2 / length;
+                    vely2 = vely2 / length;
                 }
                 final WorldFactory worldFactory = new WorldFactory(context);
                 // create a bullet
+
+/*                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed);*/
+
+                //create 3shot cluster
+                worldFactory.createBullet(shooterX, shooterY, velx1 * speed, vely * speed);
                 worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed);
+                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely2 * speed);
+
+/*                //create 3shot spread
+                worldFactory.createBullet(shooterX, shooterY, velx1 * speed, vely1 * speed);
+                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed);
+                worldFactory.createBullet(shooterX, shooterY, velx2 * speed, vely2 * speed);*/
+
                 //reset timeSinceLastShot
                 playerComponent.timeSinceLastShot = playerComponent.shootDelay;
             }

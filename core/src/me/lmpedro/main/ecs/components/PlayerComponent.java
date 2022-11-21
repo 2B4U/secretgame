@@ -21,7 +21,7 @@ public class PlayerComponent implements Component, Pool.Poolable{
         hasAxe = false;
         speed.set(0,0);
         isDead = false;
-        shootDelay = 0.5f;
+        shootDelay = 0.2f;
         timeSinceLastShot = 0f;
     }
 }
