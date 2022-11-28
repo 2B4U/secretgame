@@ -239,5 +239,6 @@ public class Main extends Game {
         assetManager.dispose();
         spriteBatch.dispose();
         stage.dispose();
+/*        ecsEngine.clearPools();*/
     }
 }

@@ -27,7 +27,6 @@ public class BulletSystem extends IteratingSystem {
         // apply bullet velocity to bullet body
         b2body.body.setLinearVelocity(bullet.xVel, bullet.yVel);
 
-
         // get player pos
         B2DComponent playerBodyComp = ECSEngine.b2DMapper.get(context.getWorldFactory().getPlayer());
         float px = playerBodyComp.body.getPosition().x;

@@ -41,6 +41,7 @@ public class WorldFactory {
             playerComponent.cam = cam;
             playerComponent.speed.set(5, 5);
             playerComponent.health = 100;
+            playerComponent.mana = 100;
 
             //add Box2d component
             /*        resetBodiesAndFixtures();*/

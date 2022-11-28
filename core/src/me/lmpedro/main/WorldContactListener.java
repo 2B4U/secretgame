@@ -3,7 +3,10 @@ package me.lmpedro.main;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
+import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.ecs.components.BulletComponent;
 import me.lmpedro.main.ecs.components.CollisionComponent;
+import me.lmpedro.main.ecs.components.TypeComponent;
 
 public class WorldContactListener implements ContactListener {
 
@@ -32,6 +35,15 @@ public class WorldContactListener implements ContactListener {
     }
 
     private void entityCollision(Entity entity, Fixture fixture) {
+
+        TypeComponent thisType = entity.getComponent(TypeComponent.class);
+        if (thisType.type == TypeComponent.BULLET){
+            if (fixture.getBody().getUserData() == "Ground"){
+                BulletComponent bullet = ECSEngine.bulletMapper.get(entity);
+                bullet.isDead = true;
+            }
+        }
+
         if(fixture.getBody().getUserData() instanceof Entity){
             Entity colEnt = (Entity) fixture.getBody().getUserData();
 

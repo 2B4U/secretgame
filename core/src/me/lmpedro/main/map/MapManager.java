@@ -1,6 +1,5 @@
 package me.lmpedro.main.map;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -8,9 +7,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.ecs.ECSEngine;
-import me.lmpedro.main.ecs.components.TypeComponent;
-import me.lmpedro.main.factorys.BodyFactory;
-import me.lmpedro.main.factorys.WorldFactory;
 
 import java.util.EnumMap;
 
@@ -20,7 +16,8 @@ public class MapManager {
     public static final String ID = MapManager.class.getName();
 
     private final World world;
-    private final Array<Body> bodies;
+    private ECSEngine engine;
+    public final Array<Body> bodies;
 
     private final AssetManager assetManager;
 
@@ -33,10 +30,12 @@ public class MapManager {
         currentMapType = null;
         currentMap = null;
         world = context.getWorld();
+        engine = new ECSEngine(context);
         assetManager = context.getAssetManager();
         bodies = new Array<>();
         mapCache = new EnumMap<MapType, Map>(MapType.class);
         listeners = new Array<MapListener>();
+
     }
 
     public void addMapListener(final MapListener listener){
@@ -76,7 +75,8 @@ public class MapManager {
         }
     }
 
-    private void spawnCollisionArea() {
+    public void spawnCollisionArea() {
+
         final BodyDef bodyDef = new BodyDef();
         final FixtureDef fixtureDef = new FixtureDef();
         for (final CollisionArea collisionArea : currentMap.getCollisionAreas()) {

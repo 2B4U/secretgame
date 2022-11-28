@@ -10,12 +10,14 @@ public class PlayerComponent implements Component, Pool.Poolable{
     public boolean hasAxe;
     public Vector2 speed = new Vector2();
     public int health;
+    public int mana;
     public boolean isDead;
     public float shootDelay = 0.2f;
-    public float timeSinceLastShot = 0.0f;
+    public float timeSinceLastShot = 0.f;
 
     @Override
     public void reset() {
+        mana = 0;
         cam = null;
         health = 0;
         hasAxe = false;
