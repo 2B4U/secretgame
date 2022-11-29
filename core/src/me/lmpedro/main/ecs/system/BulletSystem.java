@@ -28,7 +28,7 @@ public class BulletSystem extends IteratingSystem {
         b2body.body.setLinearVelocity(bullet.xVel, bullet.yVel);
 
         // get player pos
-        B2DComponent playerBodyComp = ECSEngine.b2DMapper.get(context.getWorldFactory().getPlayer());
+        B2DComponent playerBodyComp = ECSEngine.b2DMapper.get(context.getWorldFactory().player);
         float px = playerBodyComp.body.getPosition().x;
         float py = playerBodyComp.body.getPosition().y;
 
@@ -37,10 +37,10 @@ public class BulletSystem extends IteratingSystem {
         float by = b2body.body.getPosition().y;
 
         // if bullet is 20 units away from player on any axis then it is probably off screen
-        if(px - bx > 7 || py - by > 6){
+        if(px - bx > 6 || py - by > 6){
             bullet.isDead = true;
         }
-        if(bx - px > 7 || by - py > 6){
+        if(bx - px > 6 || by - py > 6){
             bullet.isDead = true;
         }
 

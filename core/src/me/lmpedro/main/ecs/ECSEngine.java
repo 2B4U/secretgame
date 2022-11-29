@@ -14,6 +14,7 @@ public class ECSEngine extends PooledEngine {
     public static final ComponentMapper<CollisionComponent> collisionMapper = ComponentMapper.getFor(CollisionComponent.class);
     public static final ComponentMapper<BulletComponent> bulletMapper = ComponentMapper.getFor(BulletComponent.class);
     public static final ComponentMapper<TypeComponent> TypeMapper = ComponentMapper.getFor(TypeComponent.class);
+    public static final ComponentMapper<SteeringComponent> SteerMapper = ComponentMapper.getFor(SteeringComponent.class);
 
     public ECSEngine(final Main context){
         super();
@@ -24,6 +25,7 @@ public class ECSEngine extends PooledEngine {
         this.addSystem(new EnemySystem(context));
         this.addSystem(new CollisionSystem());
         this.addSystem(new BulletSystem(context));
+        this.addSystem(new SteeringSystem());
     }
 
 }

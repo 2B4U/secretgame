@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import me.lmpedro.main.Main;
+import me.lmpedro.main.ai.SteeringPresets;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.*;
 
@@ -15,9 +16,6 @@ public class WorldFactory {
     private ECSEngine engine;
 
 
-    public Entity getPlayer() {
-        return player;
-    }
 
     public Entity player;
 
@@ -36,6 +34,7 @@ public class WorldFactory {
             B2DComponent b2DComponent = engine.createComponent(B2DComponent.class);
             TypeComponent type = engine.createComponent(TypeComponent.class);
             TransformComponent position = engine.createComponent(TransformComponent.class);
+            SteeringComponent steer = engine.createComponent(SteeringComponent.class);
 
             //add Player Component
             playerComponent.cam = cam;
@@ -50,12 +49,15 @@ public class WorldFactory {
             type.type = TypeComponent.PLAYER;
             position.position.set(playerStartPos.x, playerStartPos.y, 0);
 
+            steer.body = b2DComponent.body;
+
 
             entity.add(position);
             entity.add(playerComponent);
             entity.add(type);
             entity.add(collision);
             entity.add(b2DComponent);
+            entity.add(steer);
 
             engine.addEntity(entity);
             this.player = entity;
@@ -72,6 +74,7 @@ public class WorldFactory {
             B2DComponent b2DComponent = engine.createComponent(B2DComponent.class);
             TypeComponent type = engine.createComponent(TypeComponent.class);
             TransformComponent position = engine.createComponent(TransformComponent.class);
+            SteeringComponent steer = engine.createComponent(SteeringComponent.class);
 
             enemyComponent.xPosCenter = x;
             //create Box2d component
@@ -80,6 +83,12 @@ public class WorldFactory {
             b2DComponent.body.setUserData(entity);
             type.type = TypeComponent.ENEMY;
             position.position.set(x, y, 0);
+            steer.body = b2DComponent.body;
+
+            steer.steeringBehavior = SteeringPresets.getWander(steer);
+            steer.currentMode = SteeringComponent.SteeringState.WANDER;
+
+            enemyComponent.enemyType = EnemyComponent.Type.TEST1;
 
 
 /*        //create agro sensor
@@ -99,6 +108,7 @@ public class WorldFactory {
             entity.add(type);
             entity.add(collision);
             entity.add(b2DComponent);
+            entity.add(steer);
             engine.addEntity(entity);
 
             return entity;

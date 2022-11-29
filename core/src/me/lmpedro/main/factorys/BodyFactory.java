@@ -40,7 +40,7 @@ public class BodyFactory {
                 fixtureDef.restitution = 0.2f;
                 break;
             case 1:
-                fixtureDef.density = 0f;
+                fixtureDef.density = 1f;
                 fixtureDef.friction = 0f;
                 fixtureDef.restitution = 0f;
                 break;
