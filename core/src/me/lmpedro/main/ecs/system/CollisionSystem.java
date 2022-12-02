@@ -58,6 +58,7 @@ public class CollisionSystem extends IteratingSystem {
                                 BulletComponent bullet = ECSEngine.bulletMapper.get(collidedEntity);
                                 if (bullet.owner != BulletComponent.Owner.PLAYER){
                                     player.health -= 2;
+                                    bullet.isDead = true;
                                     System.out.println("player hit Bullet" + player.health);
                                     if (player.health == 0) {
                                         player.isDead = true;
