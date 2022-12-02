@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.B2DComponent;
+import me.lmpedro.main.ecs.components.BulletComponent;
 import me.lmpedro.main.ecs.components.PlayerComponent;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
@@ -93,9 +94,9 @@ public class PlayerControlSystem extends IteratingSystem implements InputListene
 /*                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed);*/
 
                 //create 3shot cluster
-                worldFactory.createBullet(shooterX, shooterY, velx1 * speed, vely * speed);
-                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed);
-                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely2 * speed);
+                worldFactory.createBullet(shooterX, shooterY, velx1 * speed, vely * speed, BulletComponent.Owner.PLAYER);
+                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely * speed, BulletComponent.Owner.PLAYER);
+                worldFactory.createBullet(shooterX, shooterY, velx * speed, vely2 * speed, BulletComponent.Owner.PLAYER);
 
 /*                //create 3shot spread
                 worldFactory.createBullet(shooterX, shooterY, velx1 * speed, vely1 * speed);

@@ -13,7 +13,7 @@ public class PlayerComponent implements Component, Pool.Poolable{
     public int mana;
     public boolean isDead;
     public float shootDelay = 0.2f;
-    public float timeSinceLastShot = 0.f;
+    public float timeSinceLastShot = 0f;
 
     @Override
     public void reset() {

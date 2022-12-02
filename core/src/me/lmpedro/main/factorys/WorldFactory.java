@@ -77,6 +77,7 @@ public class WorldFactory {
             SteeringComponent steer = engine.createComponent(SteeringComponent.class);
 
             enemyComponent.xPosCenter = x;
+            enemyComponent.health = 1000;
             //create Box2d component
             /*        resetBodiesAndFixtures();*/
             b2DComponent.body = bodyFactory.makeCirclePolyBody(x, y, 1, BodyFactory.ENEMY, BodyDef.BodyType.DynamicBody);
@@ -114,7 +115,7 @@ public class WorldFactory {
             return entity;
         }
 
-        public Entity createBullet ( float x, float y, float xVel, float yVel){
+        public Entity createBullet (float x, float y, float xVel, float yVel, BulletComponent.Owner owner){
             System.out.println("Making bullet" + x + ":" + y + ":" + xVel + ":" + yVel);
             Entity entity = engine.createEntity();
             B2DComponent b2dbody = engine.createComponent(B2DComponent.class);
@@ -131,6 +132,7 @@ public class WorldFactory {
             b2dbody.body.setUserData(entity);
             bul.xVel = xVel;
             bul.yVel = yVel;
+            bul.owner = owner;
 
             entity.add(bul);
             entity.add(colComp);

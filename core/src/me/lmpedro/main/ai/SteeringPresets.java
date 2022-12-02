@@ -11,7 +11,7 @@ import me.lmpedro.main.ecs.components.SteeringComponent;
 public class SteeringPresets {
     public static Wander<Vector2> getWander(SteeringComponent scom){
         Wander<Vector2> wander = new Wander<Vector2>(scom)
-                .setFaceEnabled(false) // let wander behaviour manage facing
+                .setFaceEnabled(false)// let wander behaviour manage facing
                 .setWanderOffset(0.2f) // distance away from entity to set target
                 .setWanderOrientation(0) // the initial orientation
                 .setWanderRadius(1f)// size of target
@@ -34,7 +34,7 @@ public class SteeringPresets {
     public static Arrive<Vector2> getArrive(SteeringComponent runner, SteeringComponent target){
         Arrive<Vector2> arrive = new Arrive<Vector2>(runner, target)
                 .setTimeToTarget(0.1f) // default 0.1f
-                .setArrivalTolerance(7f) //
+                .setArrivalTolerance(5f) //
                 .setDecelerationRadius(10f);
 
         return arrive;

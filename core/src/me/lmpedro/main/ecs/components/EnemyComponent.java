@@ -12,9 +12,13 @@ public class EnemyComponent implements Component, Pool.Poolable {
     public float health = 0;
     public boolean isAggro = false;
     public Type enemyType = Type.TEST;
+    public float shootDelay = 0.25f;
+    public float timeSinceLastShot = 0f;
 
     @Override
     public void reset() {
+        shootDelay = 0.5f;
+        timeSinceLastShot = 0;
         isDead = false;
         xPosCenter = -1;
         isGoingLeft = false;

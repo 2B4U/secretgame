@@ -55,7 +55,15 @@ public class CollisionSystem extends IteratingSystem {
                                 System.out.println("player hit other");
                                 break;
                             case TypeComponent.BULLET:
-                                System.out.println("player hit bullet");
+                                BulletComponent bullet = ECSEngine.bulletMapper.get(collidedEntity);
+                                if (bullet.owner != BulletComponent.Owner.PLAYER){
+                                    player.health -= 2;
+                                    System.out.println("player hit Bullet" + player.health);
+                                    if (player.health == 0) {
+                                        player.isDead = true;
+                                        System.out.println("Player is Dead");
+                                    }
+                                }
                                 break;
                             default:
                                 System.out.println("No matching type found");
@@ -87,9 +95,14 @@ public class CollisionSystem extends IteratingSystem {
                                 System.out.println("enemy hit bullet");
                                 EnemyComponent enemy = ECSEngine.enemyMapper.get(entity);
                                 BulletComponent bullet = ECSEngine.bulletMapper.get(collidedEntity);
-                                bullet.isDead = true;
-                                enemy.isDead = true;
-                                System.out.println("enemy got shot");
+                                if (bullet.owner != BulletComponent.Owner.ENEMY) {
+                                    enemy.health -= 50;
+                                    bullet.isDead = true;
+                                    if (enemy.health == 0) {
+                                        enemy.isDead = true;
+                                    }
+                                }
+                                System.out.println("enemy got shot, Enemy Health: " + enemy.health);
                                 break;
                             default:
                                 System.out.println("No matching type found");
