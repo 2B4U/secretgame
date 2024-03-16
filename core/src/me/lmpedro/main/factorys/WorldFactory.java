@@ -26,7 +26,31 @@ public class WorldFactory {
         bodyFactory = BodyFactory.getInstance(world);
     }
 
-        public Entity createPlayer ( final Vector2 playerStartPos, final float width, final float height, OrthographicCamera cam){
+    public Entity getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Entity player) {
+        this.player = player;
+    }
+
+    public BodyFactory getBodyFactory() {
+        return bodyFactory;
+    }
+
+    public void setBodyFactory(BodyFactory bodyFactory) {
+        this.bodyFactory = bodyFactory;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public Entity createPlayer (final Vector2 playerStartPos, final float width, final float height, OrthographicCamera cam){
             Entity entity = engine.createEntity();
 
             PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
@@ -41,6 +65,7 @@ public class WorldFactory {
             playerComponent.speed.set(5, 5);
             playerComponent.health = 100;
             playerComponent.mana = 100;
+            playerComponent.score = 0;
 
             //add Box2d component
             /*        resetBodiesAndFixtures();*/

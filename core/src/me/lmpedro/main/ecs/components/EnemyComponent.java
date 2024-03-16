@@ -14,6 +14,7 @@ public class EnemyComponent implements Component, Pool.Poolable {
     public Type enemyType = Type.TEST;
     public float shootDelay = 0.25f;
     public float timeSinceLastShot = 0f;
+    public int points;
 
     @Override
     public void reset() {
@@ -25,5 +26,6 @@ public class EnemyComponent implements Component, Pool.Poolable {
         enemyType = Type.TEST;
         health = 0;
         isAggro = false;
+        points = 10;
     }
 }

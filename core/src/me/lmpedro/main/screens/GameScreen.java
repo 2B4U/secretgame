@@ -1,7 +1,9 @@
 package me.lmpedro.main.screens;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.audio.AudioType;
 import me.lmpedro.main.ecs.ECSEngine;
+import me.lmpedro.main.ecs.components.PlayerComponent;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputManager;
@@ -36,8 +39,13 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
     private  ECSEngine ecsEngine;
     private static final String ID = Main.class.getSimpleName();
 
-    private Entity player;
+    public Entity player;
 
+
+    @Override
+    public void hide() {
+        super.hide();
+    }
 
     public GameScreen(final Main context) {
         super(context);
@@ -59,6 +67,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
 
         player = worldFactory.createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f,gameCam);
+
         worldFactory.createEnemy(12,32,1,1);
 
     }
@@ -95,13 +104,11 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         }*/
 
         //check if player is dead. if so show end screen
-/*
+
         PlayerComponent pc = (player.getComponent(PlayerComponent.class));
         if(pc.isDead){
-            context.setScreen(ScreenType.MAINMENU);
+            context.setScreen(ScreenType.LOADING);
         }
-*/
-
     }
 
     @Override
@@ -121,7 +128,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
     @Override
     public void dispose() {
-        mapRenderer.dispose();
+        context.dispose();
     }
 
     @Override
@@ -130,7 +137,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
             Gdx.app.exit();
         }
         if (manager.isKeyDown(GameKeys.SELECT)){
-            worldFactory.createEnemy(15,32,1,1);
+            worldFactory.createEnemy(15,32,2,2);
         }
     }
 

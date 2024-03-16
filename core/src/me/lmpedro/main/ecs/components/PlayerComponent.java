@@ -11,15 +11,29 @@ public class PlayerComponent implements Component, Pool.Poolable{
     public Vector2 speed = new Vector2();
     public int health;
     public int mana;
+    public int score;
     public boolean isDead;
     public float shootDelay = 0.2f;
     public float timeSinceLastShot = 0f;
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getScore() {
+        return score;
+    }
 
     @Override
     public void reset() {
         mana = 0;
         cam = null;
         health = 0;
+        score = 0;
         hasAxe = false;
         speed.set(0,0);
         isDead = false;

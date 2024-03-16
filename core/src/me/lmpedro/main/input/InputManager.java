@@ -10,7 +10,7 @@ public class InputManager implements InputProcessor {
     private final Array<InputListener> listeners;
     public boolean keyPressed;
     public boolean isMouse1Down, isMouse2Down, isMouse3Down;
-    private boolean isDragged;
+    public boolean isDragged;
     public Vector2 mouseLocation = new Vector2(0, 0);
 
     public InputManager() {
@@ -78,6 +78,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        isDragged = false;
         if(button == 0){
             isMouse1Down = true;
         }else if(button == 1){
@@ -109,6 +110,10 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        isDragged = true;
+
+        mouseLocation.x = screenX;
+        mouseLocation.y = screenY;
         return false;
     }
 

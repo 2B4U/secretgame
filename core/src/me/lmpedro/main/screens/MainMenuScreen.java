@@ -57,7 +57,7 @@ public class MainMenuScreen extends AbstractScreen<MainMenuUI> implements InputL
 
     @Override
     public void dispose() {
-
+     context.dispose();
     }
 
     @Override
