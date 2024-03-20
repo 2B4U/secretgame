@@ -1,7 +1,6 @@
 package me.lmpedro.main.ecs;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.ecs.components.*;
@@ -13,7 +12,7 @@ public class ECSEngine extends PooledEngine {
     public static final ComponentMapper<EnemyComponent> enemyMapper = ComponentMapper.getFor(EnemyComponent.class);
     public static final ComponentMapper<CollisionComponent> collisionMapper = ComponentMapper.getFor(CollisionComponent.class);
     public static final ComponentMapper<BulletComponent> bulletMapper = ComponentMapper.getFor(BulletComponent.class);
-    public static final ComponentMapper<TypeComponent> TypeMapper = ComponentMapper.getFor(TypeComponent.class);
+    public static final ComponentMapper TypeMapper = ComponentMapper.getFor(TypeComponent.class);
     public static final ComponentMapper<SteeringComponent> SteerMapper = ComponentMapper.getFor(SteeringComponent.class);
 
     public ECSEngine(final Main context){

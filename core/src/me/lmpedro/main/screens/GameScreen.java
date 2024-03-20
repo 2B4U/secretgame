@@ -107,7 +107,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
         PlayerComponent pc = (player.getComponent(PlayerComponent.class));
         if(pc.isDead){
-            context.setScreen(ScreenType.LOADING);
+            context.setScreen(ScreenType.DEATH);
         }
     }
 

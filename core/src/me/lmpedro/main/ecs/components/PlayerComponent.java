@@ -20,10 +20,6 @@ public class PlayerComponent implements Component, Pool.Poolable{
         return health;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public int getScore() {
         return score;
     }

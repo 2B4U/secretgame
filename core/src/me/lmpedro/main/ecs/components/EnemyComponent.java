@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
 public class EnemyComponent implements Component, Pool.Poolable {
-    public static enum Type { TEST, TEST1 };
+    public enum Type { TEST, TEST1 }
 
     public boolean isDead = false;
     public float xPosCenter = -1;
@@ -14,7 +14,6 @@ public class EnemyComponent implements Component, Pool.Poolable {
     public Type enemyType = Type.TEST;
     public float shootDelay = 0.25f;
     public float timeSinceLastShot = 0f;
-    public int points;
 
     @Override
     public void reset() {
@@ -26,6 +25,5 @@ public class EnemyComponent implements Component, Pool.Poolable {
         enemyType = Type.TEST;
         health = 0;
         isAggro = false;
-        points = 10;
     }
 }

@@ -102,7 +102,7 @@ public class WorldFactory {
             SteeringComponent steer = engine.createComponent(SteeringComponent.class);
 
             enemyComponent.xPosCenter = x;
-            enemyComponent.health = 1000;
+            enemyComponent.health = 100;
             //create Box2d component
             /*        resetBodiesAndFixtures();*/
             b2DComponent.body = bodyFactory.makeCirclePolyBody(x, y, 1, BodyFactory.ENEMY, BodyDef.BodyType.DynamicBody);

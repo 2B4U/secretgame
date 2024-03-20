@@ -62,7 +62,7 @@ public class PlayerControlSystem extends IteratingSystem implements InputListene
             playerComponent.timeSinceLastShot -= deltaTime;
         }
 
-        if (manager.isDragged && manager.isMouse1Down) { // if mouse button is pressed
+        if (manager.isMouse1Down) { // if mouse button is pressed
             // user wants to fire
                 if (playerComponent.timeSinceLastShot <= 0) { // check the player hasn't just shot
                     //player can shoot so do player shoot

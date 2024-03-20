@@ -9,10 +9,7 @@ import me.lmpedro.main.Main;
 import me.lmpedro.main.Utils;
 import me.lmpedro.main.ai.SteeringPresets;
 import me.lmpedro.main.ecs.ECSEngine;
-import me.lmpedro.main.ecs.components.B2DComponent;
-import me.lmpedro.main.ecs.components.BulletComponent;
-import me.lmpedro.main.ecs.components.EnemyComponent;
-import me.lmpedro.main.ecs.components.SteeringComponent;
+import me.lmpedro.main.ecs.components.*;
 import me.lmpedro.main.factorys.WorldFactory;
 
 public class EnemySystem extends IteratingSystem {
@@ -37,6 +34,8 @@ public class EnemySystem extends IteratingSystem {
         B2DComponent b2DComponent = ECSEngine.b2DMapper.get(entity);*/
         EnemyComponent enemyComponent = em.get(entity);        // get EnemyComponent
         B2DComponent b2DComponent = bodm.get(entity);
+        PlayerComponent player = ECSEngine.playerMapper.get(context.getWorldFactory().player);
+
 
         if (enemyComponent.enemyType == EnemyComponent.Type.TEST) {
             //get distance of enemy from its original start position(pad center)
@@ -96,6 +95,7 @@ public class EnemySystem extends IteratingSystem {
 
         if (enemyComponent.isDead) {
             b2DComponent.isDead = true;
+            player.score += 10;
         }
     }
 }
