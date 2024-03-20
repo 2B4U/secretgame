@@ -24,6 +24,10 @@ public class PlayerComponent implements Component, Pool.Poolable{
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     @Override
     public void reset() {
         mana = 0;

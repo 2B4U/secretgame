@@ -15,8 +15,8 @@ public class SteeringPresets {
                 .setFaceEnabled(false)// let wander behaviour manage facing
                 .setWanderOffset(0) // distance away from entity to set target
                 .setWanderOrientation(0) // the initial orientation
-                .setWanderRadius(0.11f)// size of target
-                .setWanderRate(MathUtils.PI2 * 2);
+                .setWanderRadius(0)// size of target
+                .setWanderRate(MathUtils.PI2);
     }
 
     public static Seek<Vector2> getSeek(SteeringComponent seeker, SteeringComponent target){

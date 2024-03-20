@@ -3,6 +3,7 @@ package me.lmpedro.main.screens;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,6 +16,7 @@ import me.lmpedro.main.Main;
 import me.lmpedro.main.audio.AudioType;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.PlayerComponent;
+import me.lmpedro.main.ecs.system.PlayerControlSystem;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputManager;
@@ -26,6 +28,7 @@ import me.lmpedro.main.ui.GameUI;
 
 import static me.lmpedro.main.Main.UNIT_SCALE;
 import static me.lmpedro.main.input.GameKeys.EXIT;
+import static me.lmpedro.main.input.GameKeys.LEFT;
 
 public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
@@ -37,6 +40,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
     private World world;
     private WorldFactory worldFactory;
     private  ECSEngine ecsEngine;
+    private PlayerControlSystem controller;
     private static final String ID = Main.class.getSimpleName();
 
     public Entity player;
@@ -49,6 +53,7 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
 
     public GameScreen(final Main context) {
         super(context);
+        controller = new PlayerControlSystem(context,world);
         assetManager = context.getAssetManager();
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, context.getSpriteBatch());
         this.gameCam = context.getGameCam();
@@ -108,9 +113,26 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         PlayerComponent pc = (player.getComponent(PlayerComponent.class));
         if(pc.isDead){
             context.setScreen(ScreenType.DEATH);
+            resetWorld();
         }
     }
 
+    public void resetWorld(){
+        System.out.println("Resetting world");
+        PlayerComponent pc = (player.getComponent(PlayerComponent.class));
+
+        ecsEngine.removeAllEntities();
+        worldFactory.resetWorld();
+        mapManager.spawnCollisionArea();
+        player = worldFactory.createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f,gameCam);
+        pc.reset();
+
+
+
+        /*worldFactory.createEnemy(12,32,1,1);*/
+
+
+    }
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);

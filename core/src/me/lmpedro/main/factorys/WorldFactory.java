@@ -3,8 +3,10 @@ package me.lmpedro.main.factorys;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.ai.SteeringPresets;
 import me.lmpedro.main.ecs.ECSEngine;
@@ -169,4 +171,20 @@ public class WorldFactory {
             engine.addEntity(entity);
             return entity;
         }
+
+    public void removeEntity(Entity ent){
+        engine.removeEntity(ent);
     }
+
+    public void resetWorld() {
+
+        PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
+        playerComponent.reset();
+
+        Array<Body> bods = new Array<>();
+        world.getBodies(bods);
+        for(Body bod:bods){
+            world.destroyBody(bod);
+        }
+    }
+}

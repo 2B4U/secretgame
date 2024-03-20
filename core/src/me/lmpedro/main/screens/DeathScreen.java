@@ -1,24 +1,23 @@
 package me.lmpedro.main.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import me.lmpedro.main.Main;
+import me.lmpedro.main.ecs.components.PlayerComponent;
 import me.lmpedro.main.input.GameKeys;
 import me.lmpedro.main.input.InputListener;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.ui.DeathUI;
 
 public class DeathScreen extends AbstractScreen<DeathUI> implements InputListener {
-    private final AssetManager assetManager;
 
     public DeathScreen(final Main context) {
         super(context);
 
-        this.assetManager = context.getAssetManager();
-        assetManager.load("map/map.tmx", TiledMap.class);
     }
 
     @Override
@@ -30,9 +29,13 @@ public class DeathScreen extends AbstractScreen<DeathUI> implements InputListene
     public void render(float delta) {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        /*Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);*/
 
         viewport.apply();
+
+        screenUI.updateUi(delta, context);
+
+        /*        audioManager.playAudio(AudioType.DEATH);*/
     }
 
     @Override
@@ -58,6 +61,9 @@ public class DeathScreen extends AbstractScreen<DeathUI> implements InputListene
     @Override
     public void keyPressed(InputManager manager, GameKeys key) {
 
+        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+            context.setScreen(ScreenType.MAINMENU);
+        }
     }
 
     @Override

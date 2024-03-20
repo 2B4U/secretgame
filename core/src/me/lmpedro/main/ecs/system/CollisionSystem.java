@@ -74,7 +74,7 @@ public class CollisionSystem extends IteratingSystem {
                     }
                     cc.collisionEntity = null; // collision handled reset component
                 } else {
-                    System.out.println("Player: collidedEntity.type == null");
+                    /*System.out.println("Player: collidedEntity.type == null");*/
                 }
             }
         } else if (thisType.type == TypeComponent.ENEMY) {    // Do enemy collisions//
@@ -112,7 +112,7 @@ public class CollisionSystem extends IteratingSystem {
                             }
                             cc.collisionEntity = null; // collision handled reset component
                     } else{
-                        System.out.println("Enemy: collidedEntity.type == null");
+                        /*System.out.println("Enemy: collidedEntity.type == null");*/
                     }
                 } else {
                     cc.collisionEntity = null;

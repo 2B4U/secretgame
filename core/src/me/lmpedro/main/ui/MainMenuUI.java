@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import me.lmpedro.main.Main;
 import me.lmpedro.main.audio.AudioType;
+import me.lmpedro.main.screens.GameScreen;
 import me.lmpedro.main.screens.ScreenType;
 
 public class MainMenuUI extends Table {

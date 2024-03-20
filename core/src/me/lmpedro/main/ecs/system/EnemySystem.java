@@ -95,7 +95,7 @@ public class EnemySystem extends IteratingSystem {
 
         if (enemyComponent.isDead) {
             b2DComponent.isDead = true;
-            player.score += 10;
+            player.score += 1;
         }
     }
 }
