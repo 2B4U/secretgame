@@ -178,9 +178,6 @@ public class WorldFactory {
 
     public void resetWorld() {
 
-        PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
-        playerComponent.reset();
-
         Array<Body> bods = new Array<>();
         world.getBodies(bods);
         for(Body bod:bods){

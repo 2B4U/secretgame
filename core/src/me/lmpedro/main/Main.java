@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.lmpedro.main.audio.AudioManager;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.B2DComponent;
+import me.lmpedro.main.ecs.components.PlayerComponent;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.InputManager;
 import me.lmpedro.main.map.MapManager;
@@ -48,6 +49,7 @@ public class Main extends Game {
     public static final FixtureDef FIXTURE_DEF = new FixtureDef();
     public static final float UNIT_SCALE = 1 / 8f;
     public static final short BIT_GROUND = 3;
+    public int lastScore = 0;
 
     private ComponentMapper<B2DComponent> bm = ComponentMapper.getFor(B2DComponent.class);
 
@@ -116,6 +118,7 @@ public class Main extends Game {
         //set first screen
         screenCache = new EnumMap<>(ScreenType.class);
         setScreen(ScreenType.LOADING);
+
 
     }
 

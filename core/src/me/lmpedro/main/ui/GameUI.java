@@ -82,6 +82,7 @@ public class GameUI extends Table {
         fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         entities.setText("Entities: " + context.getEcsEngine().getEntities().size());
         playerHealth.setText("Health: " + context.getWorldFactory().player.getComponent(PlayerComponent.class).getHealth());
-        playerScore.setText("Score: " + context.getWorldFactory().player.getComponent(PlayerComponent.class).getScore());
+        playerScore.setText("Score: " + context.lastScore);
+
     }
 }

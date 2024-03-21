@@ -16,6 +16,7 @@ import me.lmpedro.main.Main;
 import me.lmpedro.main.audio.AudioType;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.PlayerComponent;
+import me.lmpedro.main.ecs.system.PhysicsSystem;
 import me.lmpedro.main.ecs.system.PlayerControlSystem;
 import me.lmpedro.main.factorys.WorldFactory;
 import me.lmpedro.main.input.GameKeys;
@@ -125,7 +126,6 @@ public class GameScreen extends AbstractScreen<GameUI> implements MapListener{
         worldFactory.resetWorld();
         mapManager.spawnCollisionArea();
         player = worldFactory.createPlayer(mapManager.getCurrentMap().getStartLocation(), 0.7f,0.7f,gameCam);
-        pc.reset();
 
 
 
