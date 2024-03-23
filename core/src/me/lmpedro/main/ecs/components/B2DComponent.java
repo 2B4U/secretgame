@@ -15,4 +15,5 @@ public class B2DComponent implements Component, Pool.Poolable {
         isDead = false;
         width = height = 0;
     }
+
 }

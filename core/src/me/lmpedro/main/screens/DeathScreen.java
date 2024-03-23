@@ -64,7 +64,7 @@ public class DeathScreen extends AbstractScreen<DeathUI> implements InputListene
 
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
             context.setScreen(ScreenType.MAINMENU);
-            context.lastScore = 0;
+            context.getWorldFactory().player.getComponent(PlayerComponent.class).score = 0;
         }
     }
 

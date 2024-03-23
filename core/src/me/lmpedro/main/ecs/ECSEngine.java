@@ -22,7 +22,7 @@ public class ECSEngine extends PooledEngine {
         this.addSystem(new PlayerControlSystem(context, context.getWorld()));
         this.addSystem(new PlayerCameraSystem(context));
         this.addSystem(new EnemySystem(context));
-        this.addSystem(new CollisionSystem());
+        this.addSystem(new CollisionSystem(context));
         this.addSystem(new BulletSystem(context));
         this.addSystem(new SteeringSystem());
     }

@@ -22,6 +22,7 @@ public class GameUI extends Table {
     private final Label javaHeap;
     private final Label nativeHeap;
     private final Label entities;
+    private final Label score;
 
 
     public GameUI(final Main context) {
@@ -38,6 +39,7 @@ public class GameUI extends Table {
         playerPosY = new Label("playerPos:", getSkin(), "huge");
         playerHealth = new Label("playerHealth:", getSkin(),"huge");
         playerScore = new Label("playerScore:", getSkin(),"huge");
+        score = new Label("score:", getSkin(),"huge");
 
         maxSpritesInBatch = new Label("MaxSpritesInBatch",getSkin(),"huge");
         javaHeap = new Label("javaHeap", getSkin(), "huge");
@@ -66,6 +68,8 @@ public class GameUI extends Table {
         add(playerHealth);
         row();
         add(playerScore);
+        row();
+        add(score);
         top().left();
         setDebug(true, true);
     }
@@ -83,6 +87,7 @@ public class GameUI extends Table {
         entities.setText("Entities: " + context.getEcsEngine().getEntities().size());
         playerHealth.setText("Health: " + context.getWorldFactory().player.getComponent(PlayerComponent.class).getHealth());
         playerScore.setText("Score: " + context.lastScore);
+        score.setText("score: " + context.getWorldFactory().player.getComponent(PlayerComponent.class).getScore());
 
     }
 }

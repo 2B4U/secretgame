@@ -11,6 +11,7 @@ public class BodyFactory {
     public static final int PLAYER = 0;
     public static final int ENEMY = 1;
     public static final int BULLET = 2;
+    public static final int HEALTH = 3;
 
 
     private static BodyFactory thisInstance;
@@ -37,17 +38,17 @@ public class BodyFactory {
             case 0:
                 fixtureDef.density = 1f;
                 fixtureDef.friction = 0f;
-                fixtureDef.restitution = 0.2f;
+                fixtureDef.restitution = 0f;
                 break;
             case 1:
-                fixtureDef.density = 1f;
+                fixtureDef.density = 0f;
                 fixtureDef.friction = 0f;
-                fixtureDef.restitution = 0f;
+                fixtureDef.restitution = 0.1f;
                 break;
             default:
                 fixtureDef.density = 0f;
-                fixtureDef.friction = 0.5f;
-                fixtureDef.restitution = 0.3f;
+                fixtureDef.friction = 0f;
+                fixtureDef.restitution = 0f;
         }
         return fixtureDef;
     }

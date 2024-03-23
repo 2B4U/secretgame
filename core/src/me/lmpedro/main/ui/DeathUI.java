@@ -31,6 +31,6 @@ public class DeathUI extends Table {
 
     public void updateUi(float delta, Main context){
         text.setText("Oh dear, your dead haha");
-        score.setText("Your Score: " + context.lastScore);
+        score.setText("Your Score: " + context.getWorldFactory().player.getComponent(PlayerComponent.class).score);
     }
 }

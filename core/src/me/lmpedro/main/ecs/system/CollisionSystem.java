@@ -4,19 +4,25 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import me.lmpedro.main.Main;
 import me.lmpedro.main.ecs.ECSEngine;
 import me.lmpedro.main.ecs.components.*;
 
+import java.util.Random;
+
 public class CollisionSystem extends IteratingSystem {
+
+    private final Main context;
     ComponentMapper<CollisionComponent> cm;
     ComponentMapper<PlayerComponent> pm;
     ComponentMapper<EnemyComponent> em;
 
     @SuppressWarnings("unchecked")
-    public CollisionSystem() {
+    public CollisionSystem(Main context) {
 
         super(Family.all(CollisionComponent.class).get());
 
+        this.context = context;
         cm = ComponentMapper.getFor(CollisionComponent.class);
         pm = ComponentMapper.getFor(PlayerComponent.class);
         em = ComponentMapper.getFor(EnemyComponent.class);
@@ -40,6 +46,16 @@ public class CollisionSystem extends IteratingSystem {
                 TypeComponent type = collidedEntity.getComponent(TypeComponent.class);
                 if (type != null) {
                     switch (type.type) {
+                        case TypeComponent.HEALTH:
+                            B2DComponent b2DComponent = ECSEngine.b2DMapper.get(collidedEntity);
+                            b2DComponent.isDead = true;
+                            if (player.health < 100){
+                                player.health += 10;
+                                if (player.health > 100){
+                                    player.health = 100;
+                                }
+                            }
+                            break;
                         case TypeComponent.ENEMY:
                             //do player hit enemy thing
                             player.health -= 20;
@@ -98,12 +114,24 @@ public class CollisionSystem extends IteratingSystem {
                         case TypeComponent.BULLET:
                             System.out.println("enemy hit bullet");
                             BulletComponent bullet = ECSEngine.bulletMapper.get(collidedEntity);
+                            PlayerComponent player = context.getWorldFactory().player.getComponent(PlayerComponent.class);
+                            B2DComponent b2DComponent = ECSEngine.b2DMapper.get(entity);
                             if (bullet.owner != BulletComponent.Owner.ENEMY) {
                                 enemy.health -= 50;
                                 bullet.isDead = true;
                                 if (enemy.health == 0) {
                                     enemy.isDead = true;
+                                    player.score += 10;
+
+                                    Random random = new Random();
+
+                                    int min = 0;
+                                    int max = 500;
+                                    if (random.nextInt(max - min + 1) + min > 250) {
+                                        System.out.println("health made");
+                                        context.getWorldFactory().createHealth(b2DComponent.body.getPosition().x, b2DComponent.body.getPosition().y, 1, 1);
                                     }
+                                }
                             }
                                 System.out.println("enemy got shot, Enemy Health: " + enemy.health);
                                 break;

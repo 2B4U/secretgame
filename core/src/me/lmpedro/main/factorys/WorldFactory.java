@@ -52,6 +52,45 @@ public class WorldFactory {
         this.world = world;
     }
 
+
+    public Entity createHealth (float x, float y, final float width, final float height){
+
+        Entity entity = engine.createEntity();
+        B2DComponent b2dbody = engine.createComponent(B2DComponent.class);
+        TransformComponent position = engine.createComponent(TransformComponent.class);
+
+        TypeComponent type = engine.createComponent(TypeComponent.class);
+        CollisionComponent colComp = engine.createComponent(CollisionComponent.class);
+        SteeringComponent steering = engine.createComponent(SteeringComponent.class);
+        EnemyComponent enemyComponent = engine.createComponent(EnemyComponent.class);
+
+        b2dbody.body = bodyFactory.makeCirclePolyBody(x, y, 0.5f, BodyFactory.HEALTH, BodyDef.BodyType.DynamicBody);
+
+
+        position.position.set(x, y, 0);
+        type.type = TypeComponent.HEALTH;
+        b2dbody.body.setUserData(entity);
+        b2dbody.body.setBullet(true); // increase physics computation to limit body travelling through other objects
+        bodyFactory.makeAllFixturesSensors(b2dbody.body); // make bullets sensors so they don't move player
+        steering.body = b2dbody.body;
+
+        steering.steeringBehavior = SteeringPresets.getWander(steering);
+        steering.currentMode = SteeringComponent.SteeringState.WANDER;
+
+        enemyComponent.enemyType = EnemyComponent.Type.HEALTH;
+
+        entity.add(colComp);
+        entity.add(b2dbody);
+        entity.add(position);
+        entity.add(steering);
+        entity.add(enemyComponent);
+
+        entity.add(type);
+
+        engine.addEntity(entity);
+        return entity;
+    }
+
     public Entity createPlayer (final Vector2 playerStartPos, final float width, final float height, OrthographicCamera cam){
             Entity entity = engine.createEntity();
 
